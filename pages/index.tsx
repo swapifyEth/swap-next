@@ -140,8 +140,10 @@ export default function Home() {
         console.log("started getting waps");
         for (let index = 0; index < Number(userCount); index++) {
             let swap = await contract.userSwaps(address, index);
-            const swapDetails = await contract.getSwapToken(swap.swapId, 0);
+            console.log(swap);
 
+            const swapDetails = await contract.getSwapToken(swap.swapId, 0);
+            console.log(swapDetails);
             //Check it exists
             let offer;
             let offerDetails;
@@ -158,6 +160,7 @@ export default function Home() {
                 console.log("OFFFER EXISTS");
                 console.log(offerDetails);
             }
+            console.log("SWAP STATUS");
 
             swaps.push({
                 swapId: swap.swapId,
@@ -169,7 +172,9 @@ export default function Home() {
                 offerId: 0,
                 offerToken: offerDetails?.tokenId,
                 offerAddress: offerDetails?.token,
-                status: swap.status,
+                status: offerDetails?.token
+                    ? offerDetails?.status
+                    : swap.status,
             });
         }
 
