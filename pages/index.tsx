@@ -199,6 +199,7 @@ export default function Home() {
                                                     contract={swap.contract}
                                                     description={swap.description}
                                                 />
+                                                <Cross />
 
                                                 {swap?.offerToken && (
                                                     <>
