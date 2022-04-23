@@ -17,7 +17,7 @@ export default function Home() {
     <Header active={HeaderActive.Swaps}/>
       {
       connectedWallet ?
-      <div className="mx-4 my-8 w-full">
+      <div className="mx-4 my-8 w-full" data-aos="fade-up">
         <OpenSwap />
         <div className="flex flex-col gap-y-6 pb-6 pt-4">
         <h1 className="text-3xl">Your open swap</h1>
