@@ -50,7 +50,7 @@ const Modal = ({
                       data-aos="fade-in"
                   >
                       <div className="w-1/3 h-full flex items-center mx-auto">
-                          <div className={clsx("p-4 rounded-xl bg-swapify-gray w-full", loading && "bg-opacity-[0.8] blur-[3px]")}>
+                          <div className={clsx("p-4 rounded-xl bg-swapify-gray w-full")}>
                               <div className="flex flex-row items-center justify-between">
                                   <h1 className="text-3xl pb-4">
                                       Choose NFT (S)
@@ -94,7 +94,7 @@ const Modal = ({
                                                       onApprove={async ()  =>
                                                         {
                                                             setLoading(true);
-                                                          await approveNft(
+                                                          approveNft(
                                                               nft?.contract
                                                                   ?.address,
                                                               nft?.id?.tokenId
