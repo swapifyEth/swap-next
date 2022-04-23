@@ -28,6 +28,8 @@ contract Swapify {
     mapping(uint256 => Offer[]) public offers;
     mapping(address => Swap[]) public userSwaps; // contract.userSwaps(address)
     mapping(address => Offer[]) public userOffers;
+    mapping(address => uint256) public userSwapCount;
+    mapping(address => uint256) public userOffersCount;
 
     event SwapCreated(address seller, address[] tokens, uint256[] tokenIds);
     event OfferProposed(address buyer, address[] tokens, uint256[] tokenIds);
@@ -104,6 +106,7 @@ contract Swapify {
         swaps[swapId] = swap_;
         userSwaps[msg.sender].push(swap_);
         swapCount++;
+        userSwapCount[msg.sender]++;
 
         emit SwapCreated(msg.sender, _swapTokens, _swapTokenIds);
     }
@@ -127,6 +130,7 @@ contract Swapify {
 
         offers[_swapId].push(offer_);
         userOffers[msg.sender].push(offer_);
+        userOffersCount[msg.sender]++;
 
         emit OfferProposed(msg.sender, _offerTokens, _offerTokenIds);
     }

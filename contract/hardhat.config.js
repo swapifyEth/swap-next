@@ -13,10 +13,10 @@ module.exports = {
     defaultNetwork: "hardhat",
     networks: {
         hardhat: {},
-        rinkeby: {
-            url: `https://rinkeby.infura.io/v3/${WEB3_INFURA_PROJECT_ID}`,
-            accounts: [`0x${PRIVATE_KEY}`],
-        },
+        // rinkeby: {
+        //     url: `https://rinkeby.infura.io/v3/${WEB3_INFURA_PROJECT_ID}`,
+        //     accounts: [`0x${PRIVATE_KEY}`],
+        // },
     },
     solidity: {
         version: "0.8.4",
