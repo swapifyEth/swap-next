@@ -1,6 +1,7 @@
 import clsx from "clsx";
-
+import Image from 'next/image';
 const VNFTCard = ({ active, image, name, onApprove }) => {
+    console.log(image);
     return (
         <div
             onClick={onApprove}
@@ -9,8 +10,10 @@ const VNFTCard = ({ active, image, name, onApprove }) => {
                 active && "border-4 border-green-400 p-1 rounded-xl"
             )}
         >
-            <div className="bg-swapify-purple h-32 w-full">
+            <div className="bg-swapify-purple h-32 w-full relative">
                 {/* Image goes here */}
+
+                <Image src={image} layout="fill" alt="" />
             </div>
             <div>
                 <h1>{name}</h1>
