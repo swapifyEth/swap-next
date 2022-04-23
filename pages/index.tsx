@@ -24,7 +24,7 @@ const providerOptions = {
 
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
-const swapAddress = "0xd0eC2dA7E44027d0132c4D2411681Cd86f064Eed";
+const swapAddress = "0x230C3F1DeB92cdf4bE58ECE0800cc2be94157013";
 
 import { WebSocketProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
@@ -45,7 +45,11 @@ export default function Home() {
     const [txLoad, setTxLoad] = useState(false);
 
     useEffect(() => {
-        if (address) getOpenSwaps();
+        if (address) {
+            (async () => {
+                await getOpenSwaps();
+            })();
+        }
     }, [address]);
 
     const connectWallet = async () => {
@@ -60,7 +64,6 @@ export default function Home() {
             setProvider(provider);
 
             const addresses = await provider.listAccounts();
-            console.log(addresses);
             if (addresses?.length > 0) setAddress(addresses[0]);
 
             const signer = provider.getSigner();
@@ -75,13 +78,12 @@ export default function Home() {
             signer
         );
 
-        console.log(tokenContract);
-
         //Call approve
         const tx = await tokenContract.approve(contractAddress, tokenId);
+        setTxLoad(true);
         const result = await tx.wait();
 
-        console.log(result);
+        setTxLoad(false);
 
         setApproved({ contractAddress, tokenId: tokenId });
     };
@@ -100,9 +102,26 @@ export default function Home() {
             [approved.tokenId],
             description
         );
+        setTxLoad(true);
+        const result = await tx.wait();
+        setTxLoad(false);
+        toggle();
+    };
+
+    const acceptSwap = async (swapId, offerId) => {
+        const contract = new ethers.Contract(
+            swapAddress,
+            swapContract.abi,
+            signer
+        );
+
+        // const data = await contract.userSwaps(address, 0);
+        // console.log(data);
+        const tx = await contract.acceptOffer(swapId, offerId);
+        setTxLoad(true);
         const result = await tx.wait();
         console.log(result);
-        toggle();
+        setTxLoad(false);
     };
 
     const getOpenSwaps = async () => {
@@ -116,19 +135,25 @@ export default function Home() {
 
         //Loop through
         let swaps = [];
+        console.log("started getting waps");
         for (let index = 0; index < Number(userCount); index++) {
             let swap = await contract.userSwaps(address, 0);
             const swapDetails = await contract.getSwapToken(swap.swapId, 0);
 
             //Check it exists
-            const offers = await contract.offers(swap.swapId, 0);
-            console.log(offers);
-            // const offerDetails = await contract.getOfferToken(
-            //     swap.swapId,
-            //     0,
-            //     0
-            // );
-            // console.log(offerDetails);
+            let offer;
+            let offerDetails;
+
+            const exists = await contract.offerExists(swap.swapId);
+            if (exists) {
+                offer = await contract.offers(swap.swapId, 0);
+                const offerDetails = await contract.getOfferToken(
+                    swap.swapId,
+                    0,
+                    0
+                );
+                console.log(offerDetails);
+            }
 
             swaps.push({
                 swapId: swap.swapId,
@@ -136,8 +161,14 @@ export default function Home() {
                 contract: swapDetails.token,
                 description: swap.description,
                 buyer: swap.buyer,
+                offerId: offer?.id,
+                offerToken: offerDetails?.tokenId,
+                offerAddress: offerDetails?.token,
+                status: swap.status,
             });
         }
+
+        console.log(swaps);
 
         setUserSwaps(swaps);
     };
@@ -157,25 +188,46 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col gap-y-6">
                             <div className="flex flex-row items-center gap-x-10">
-                                <>
-                                    {userSwaps.map((swap) => {
-                                        <div className="flex flex-row items-center gap-x-10">
-                                            <NFTCard />
-                                        </div>;
-                                    })}
-                                    <Cross />
-                                </>
+                                {userSwaps.map((swap) => (
+                                    <div
+                                        key={swap.swapId}
+                                        className="flex flex-row items-center gap-x-10"
+                                    >
+                                        {swap.status == 1 && (
+                                            <>
+                                                <NFTCard
+                                                    tokenId={swap.tokenId}
+                                                    contract={swap.contract}
+                                                />
+
+                                                {swap?.offerToken && (
+                                                    <>
+                                                        <Tick
+                                                            accept={() =>
+                                                                acceptSwap(
+                                                                    swap.swapId,
+                                                                    swap.offerId
+                                                                )
+                                                            }
+                                                        />
+                                                        {/* //<NFTCard /> */}
+                                                    </>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                         <h5 className="py-6">Your trade requests</h5>
                         <div className="flex flex-col gap-y-6">
                             <div className="flex flex-row items-center gap-x-10">
-                                <NFTCard />
+                                {/* <NFTCard />
                                 <div className="flex flex-col gap-y-4">
                                     <Tick />
                                     <Cross />
                                 </div>
-                                <NFTCard />
+                                <NFTCard /> */}
                             </div>
                         </div>
                     </div>

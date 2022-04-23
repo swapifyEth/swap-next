@@ -50,5 +50,6 @@ module.exports = {
     },
     etherscan: {
         apiKey: ETHERSCAN_TOKEN,
+        verify: true,
     },
 };
