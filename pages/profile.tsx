@@ -1,8 +1,10 @@
 import Header, { HeaderActive } from "../components/Header";
 import NFTCard from "../components/NFTCard";
 import Image from "next/image";
+import useModal from "../hooks/showModal";
 
 const Profile = () => {
+    const {isShowing, toggle} = useModal();
 return (
 <>
 <Header active={HeaderActive.Profile}/>

@@ -2,14 +2,16 @@ import { useState } from 'react'
 import Cross from '../components/Cross'
 import Footer from '../components/Footer'
 import Header, { HeaderActive } from '../components/Header'
+import Modal from '../components/Modal'
 import NFTCard from '../components/NFTCard'
 import OpenSwap from '../components/OpenSwap'
 import Tick from '../components/Tick'
+import useModal from '../hooks/showModal'
 
 export default function Home() {
 
   const [connectedWallet, setConnectedWallet] = useState(false)
-
+  const {isShowing, toggle} = useModal();
   
   return (
     <>
@@ -18,7 +20,7 @@ export default function Home() {
       {
       connectedWallet ?
       <div className="mx-4 my-8 w-full" data-aos="fade-up">
-        <OpenSwap />
+        <OpenSwap toggle={toggle}/>
         <div className="flex flex-col gap-y-6 pb-6 pt-4">
         <h1 className="text-3xl">Your open swap</h1>
         <h5>Your NFTs up for swap</h5>
@@ -50,6 +52,7 @@ export default function Home() {
         </>
       }
     </div>
+    <Modal isShowing={isShowing} hide={toggle} />
     </>
   )
 }

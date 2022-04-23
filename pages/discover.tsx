@@ -1,10 +1,14 @@
 import Header, { HeaderActive } from "../components/Header";
+import Modal from "../components/Modal";
 import NFTCard from "../components/NFTCard";
 import OpenSwap from "../components/OpenSwap";
+import useModal from "../hooks/showModal";
 
 import GreenLeft from '../public/greenLeft.svg';
 
 const Discover = () => {
+
+    const {isShowing, toggle} = useModal();
 return (
 <>
 <Header active={HeaderActive.Discover}/>
@@ -16,10 +20,11 @@ return (
             <div className="flex flex-col gap-y-4">
                 <GreenLeft />
             </div>
-            <OpenSwap />
+            <OpenSwap toggle={toggle}/>
           </div>
         </div>
 </div>
+<Modal isShowing={isShowing} hide={toggle} />
 </>
 );
 };
