@@ -9,7 +9,7 @@ const VNFTCard = ({ active, image, name, onApprove }) => {
                 "flex flex-col w-32 cursor-pointer",
                 active && "border-4 border-green-400 p-1 rounded-xl"
             )}
-        >
+        >   
             <div className="bg-swapify-purple h-32 w-full relative rounded-lg">
                 {/* Image goes here */}
 
