@@ -3,8 +3,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
-import Web3 from "web3";
-import { providers } from "ethers";
 import { ethers } from "ethers";
 
 import Web3Modal from "web3modal";
@@ -24,18 +22,27 @@ const providerOptions = {
     },
 };
 
-export default function Home() {
-    const web3Modal = new Web3Modal({
-        network: "rinkeby", // optional
-        cacheProvider: true, // optional
-        providerOptions, // required
-    });
-    const connectWallet = async () => {
-        const instance = await web3Modal.connect();
-        const provider = new ethers.providers.Web3Provider(instance);
-        console.log(await provider.listAccounts());
+import { swapTest, tokenTest } from "../utils/utils";
 
-        const signer = provider.getSigner();
+export default function Home() {
+    const connectWallet = async () => {
+        if (window) {
+            const web3Modal = new Web3Modal({
+                network: "rinkeby", // optional
+                cacheProvider: true, // optional
+                providerOptions, // required
+            });
+            const instance = await web3Modal.connect();
+            const provider = new ethers.providers.Web3Provider(instance);
+            console.log(await provider.listAccounts());
+
+            const signer = provider.getSigner();
+        }
+    };
+
+    const createSwap = async () => {
+        await swapTest();
+        await tokenTest();
     };
 
     return (
@@ -50,6 +57,7 @@ export default function Home() {
             </Head>
             <h1 className={styles.title}>Welcome to Swapify</h1>
             <button onClick={() => connectWallet()}>Wallet Connect</button>
+            <button onClick={() => createSwap()}>Create swap</button>
         </div>
     );
 }
