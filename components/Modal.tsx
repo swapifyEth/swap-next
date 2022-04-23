@@ -34,6 +34,7 @@ const Modal = ({
 
                 if (result?.data?.ownedNfts?.length > 0) {
                     setNfts(result?.data?.ownedNfts.splice(0, 3));
+                    console.log(nfts);
                 }
             } catch (err) {
                 console.error(err);
@@ -97,7 +98,7 @@ const Modal = ({
                                                               nft?.id?.tokenId
                                                           )
                                                       }
-                                                      image={""}
+                                                      image={nft?.metadata?.image}
                                                   />
                                               ))}
                                           </div>

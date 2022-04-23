@@ -3,7 +3,7 @@
 const nextConfig = {
   reactStrictMode: true,
     images: {
-    domains: ['ipfs.infura.io']
+    domains: ['ipfs.infura.io', 'gateway.pinata.cloud']
   },
   webpack(config) {
     config.module.rules.push({
