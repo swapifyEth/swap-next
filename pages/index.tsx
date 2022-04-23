@@ -24,7 +24,7 @@ const providerOptions = {
 
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
-const swapAddress = "0xDcec92d40A64eAD7Ece4dd3e3090Dcc411156007";
+const swapAddress = "0xd0eC2dA7E44027d0132c4D2411681Cd86f064Eed";
 
 import { WebSocketProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
@@ -118,8 +118,25 @@ export default function Home() {
         let swaps = [];
         for (let index = 0; index < Number(userCount); index++) {
             let swap = await contract.userSwaps(address, 0);
-            console.log(swap.swapId);
-            swaps.push(swap);
+            const swapDetails = await contract.getSwapToken(swap.swapId, 0);
+
+            //Check it exists
+            const offers = await contract.offers(swap.swapId, 0);
+            console.log(offers);
+            // const offerDetails = await contract.getOfferToken(
+            //     swap.swapId,
+            //     0,
+            //     0
+            // );
+            // console.log(offerDetails);
+
+            swaps.push({
+                swapId: swap.swapId,
+                tokenId: swapDetails.tokenId,
+                contract: swapDetails.token,
+                description: swap.description,
+                buyer: swap.buyer,
+            });
         }
 
         setUserSwaps(swaps);
@@ -140,12 +157,14 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col gap-y-6">
                             <div className="flex flex-row items-center gap-x-10">
-                              <>
-                                {userSwaps.map(() => {
-                                    <NFTCard />;
-                                })}
-                                <Cross />
-                              </>
+                                <>
+                                    {userSwaps.map((swap) => {
+                                        <div className="flex flex-row items-center gap-x-10">
+                                            <NFTCard />
+                                        </div>;
+                                    })}
+                                    <Cross />
+                                </>
                             </div>
                         </div>
                         <h5 className="py-6">Your trade requests</h5>
