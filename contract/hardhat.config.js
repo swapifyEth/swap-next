@@ -6,19 +6,28 @@ require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 
-const { API_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
+const { PRIVATE_KEY, ETHERSCAN_TOKEN, WEB3_INFURA_PROJECT_ID } = process.env;
 
 module.exports = {
-    solidity: "0.7.3",
-    defaultNetwork: "ropsten",
+    solidity: "0.8.0",
+    defaultNetwork: "hardhat",
     networks: {
         hardhat: {},
-        ropsten: {
-            url: API_URL,
+        rinkeby: {
+            url: `https://rinkeby.infura.io/v3/${WEB3_INFURA_PROJECT_ID}`,
             accounts: [`0x${PRIVATE_KEY}`],
         },
     },
+    solidity: {
+        version: "0.8.0",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          }
+        }
+    },
     etherscan: {
-        apiKey: ETHERSCAN_API_KEY,
+        apiKey: ETHERSCAN_TOKEN,
     },
 };
