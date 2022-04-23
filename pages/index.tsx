@@ -281,6 +281,7 @@ export default function Home() {
                 createSwap={createSwap}
                 address={address}
                 hide={toggle}
+                initialized
             />
         </>
     );
