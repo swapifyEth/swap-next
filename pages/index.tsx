@@ -1,8 +1,10 @@
-import Head from 'next/head'
-import Image from 'next/image'
 import { useState } from 'react'
+import Cross from '../components/Cross'
+import Footer from '../components/Footer'
 import Header, { HeaderActive } from '../components/Header'
+import NFTCard from '../components/NFTCard'
 import OpenSwap from '../components/OpenSwap'
+import Tick from '../components/Tick'
 
 export default function Home() {
 
@@ -11,17 +13,43 @@ export default function Home() {
   
   return (
     <>
+    <div className="min-h-screen">
     <Header active={HeaderActive.Swaps}/>
       {
       connectedWallet ?
       <div className="mx-4 my-8 w-full">
         <OpenSwap />
+        <div className="flex flex-col gap-y-6 pb-6 pt-4">
+        <h1 className="text-3xl">Your open swap</h1>
+        <h5>Your NFTs up for swap</h5>
+        </div>
+        <div className="flex flex-col gap-y-6">
+          <div className="flex flex-row items-center gap-x-10">
+            <NFTCard />
+            <Cross />
+          </div>
+        </div>
+        <h5 className="py-6">Your trade requests</h5>
+        <div className="flex flex-col gap-y-6">
+          <div className="flex flex-row items-center gap-x-10">
+            <NFTCard />
+            <div className="flex flex-col gap-y-4">
+              <Tick />
+              <Cross />
+            </div>
+            <NFTCard />
+          </div>
+        </div>
       </div>
       :
+      <>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <button onClick={() => setConnectedWallet(true)} className="bg-swapify-purple px-10 text-sm font-bold py-2 rounded-full hover:bg-purple-600">Connect wallet</button>
         </div>
+        <Footer />
+        </>
       }
+    </div>
     </>
   )
 }
