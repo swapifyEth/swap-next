@@ -26,6 +26,7 @@ contract Swapify {
     uint256 public swapCount;
     mapping(uint256 => Swap) public swaps;
     mapping(uint256 => Offer[]) public offers;
+    mapping(uint256 => bool) public offerExists;
     mapping(address => Swap[]) public userSwaps; // contract.userSwaps(address)
     mapping(address => Offer[]) public userOffers;
     mapping(address => uint256) public userSwapCount;
@@ -131,6 +132,7 @@ contract Swapify {
         offers[_swapId].push(offer_);
         userOffers[msg.sender].push(offer_);
         userOffersCount[msg.sender]++;
+        offerExists[_swapId] = true;
 
         emit OfferProposed(msg.sender, _offerTokens, _offerTokenIds);
     }
