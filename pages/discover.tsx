@@ -148,6 +148,7 @@ const Discover = () => {
                 address={address}
                 swapId={swapId}
                 hide={toggle}
+                initialized={false}
             />
         </>
     );

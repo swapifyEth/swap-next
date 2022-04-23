@@ -16,6 +16,7 @@ const Modal = ({
     address,
     txLoad,
     swapId,
+    initialized
 }) => {
     const [selected, setSelected] = React.useState([false, false, false]);
     const [loading, setLoading] = React.useState(false);
@@ -115,7 +116,7 @@ const Modal = ({
                                                   />
                                               ))}
                                           </div>
-                                          {!swapId && (
+                                          {initialized && (
                                               <>
                                                   <label>Description</label>
                                                   <Field
