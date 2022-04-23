@@ -3,7 +3,7 @@ import axios from "axios";
 
 import React, { useEffect, useState } from "react";
 
-const NFTCard = ({ description, tokenId, contract }) => {
+const NFTCard = ({ description, tokenId, contract, address }) => {
     const [nft, setNft] = useState(null);
 
     useEffect(() => {
@@ -36,12 +36,11 @@ const NFTCard = ({ description, tokenId, contract }) => {
                 <h1>{nft?.name}</h1>
                 <div className="bg-white rounded-full py-2 px-1 flex flex-row item-center gap-x-6 cursor-pointer">
                     <Image alt="" width="32" height="32" src="/Avatar.png" />
-                    <p className="text-black text-sm pt-1">0xjsx...fa12</p>
+                    <p className="text-black text-sm pt-1">{address}</p>
                 </div>
-                    <p className="text-sm">{description}</p>
+                <p className="text-sm">{description}</p>
             </div>
         </div>
-        
     );
 };
 

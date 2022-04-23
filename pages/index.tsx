@@ -24,7 +24,7 @@ const providerOptions = {
 
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
-const swapAddress = "0x230C3F1DeB92cdf4bE58ECE0800cc2be94157013";
+const swapAddress = "0x342e064B4dcC524bA3311557d42F4F80698B32F3";
 
 import { WebSocketProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
@@ -163,8 +163,9 @@ export default function Home() {
                 swapId: swap.swapId,
                 tokenId: swapDetails.tokenId,
                 contract: swapDetails.token,
+                seller: swap.seller,
                 description: swap.description,
-                buyer: swap.buyer,
+                buyer: offer?.buyer,
                 offerId: 0,
                 offerToken: offerDetails?.tokenId,
                 offerAddress: offerDetails?.token,
@@ -202,14 +203,12 @@ export default function Home() {
                                                 tokenId={swap.tokenId}
                                                 contract={swap.contract}
                                                 description={swap.description}
+                                                address={swap.seller}
                                             />
                                             <Cross />
 
                                             {swap?.offerToken && (
                                                 <>
-                                                    <h1>
-                                                        offer lets goooo!!!!!
-                                                    </h1>
                                                     <Tick
                                                         acceptSwap={() =>
                                                             acceptSwap(
@@ -217,6 +216,18 @@ export default function Home() {
                                                                 0
                                                             )
                                                         }
+                                                    />
+                                                    <NFTCard
+                                                        tokenId={
+                                                            swap.offerToken
+                                                        }
+                                                        contract={
+                                                            swap.offerAddress
+                                                        }
+                                                        description={
+                                                            swap.description
+                                                        }
+                                                        address={swap.buyer}
                                                     />
                                                     {/* //<NFTCard /> */}
                                                 </>
