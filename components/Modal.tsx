@@ -22,13 +22,15 @@ const Modal = ({isShowing, hide} : {isShowing: boolean, hide: () => void}) => {
                     </div>
                     <Formik
                         initialValues={{
-                            nfts: [],
+                            nfts: selected,
                             description: ""
                         }}
                         onSubmit={(values, { setSubmitting }) => {
                             setTimeout(() => {
+                                values.nfts = selected;
                                 alert(JSON.stringify(values, null, 2));
                                 setSubmitting(false);
+                                hide();
                             }, 400);
                         }}
                     >
@@ -47,14 +49,14 @@ const Modal = ({isShowing, hide} : {isShowing: boolean, hide: () => void}) => {
                                 </div>
                                 <label>Description</label>
                                 <Field type="text"  className="pl-1 mr-6 mb-4 rounded py-1 text-black" name="description" placeholder="I am looking for..."/>
+                                <div className="w-full">
+                                <button type="submit" className="rounded-lg bg-gray-500 hover:bg-gray-300 px-3 py-1">
+                                    Put up for swap
+                                </button>
+                                </div>
                             </Form>
                         )}
                     </Formik>
-                    <div className="w-full">
-                    <button className="rounded-lg bg-gray-500 hover:bg-gray-300 px-3 py-1" onClick={hide}>
-                        Put up for swap
-                    </button>
-                    </div>
                 </div>
                 </div>
             </div>
