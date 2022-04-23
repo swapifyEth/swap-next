@@ -137,7 +137,7 @@ export default function Home() {
         let swaps = [];
         console.log("started getting waps");
         for (let index = 0; index < Number(userCount); index++) {
-            let swap = await contract.userSwaps(address, 0);
+            let swap = await contract.userSwaps(address, index);
             const swapDetails = await contract.getSwapToken(swap.swapId, 0);
 
             //Check it exists
@@ -187,17 +187,17 @@ export default function Home() {
                             <h5>Your NFTs up for swap</h5>
                         </div>
                         <div className="flex flex-col gap-y-6">
-                            <div className="flex flex-row items-center gap-x-10">
                                 {userSwaps.map((swap) => (
                                     <div
                                         key={swap.swapId}
-                                        className="flex flex-row items-center gap-x-10"
+                                        className="flex flex-row w-screen items-center gap-x-10"
                                     >
                                         {swap.status == 1 && (
                                             <>
                                                 <NFTCard
                                                     tokenId={swap.tokenId}
                                                     contract={swap.contract}
+                                                    description={swap.description}
                                                 />
 
                                                 {swap?.offerToken && (
@@ -217,7 +217,6 @@ export default function Home() {
                                         )}
                                     </div>
                                 ))}
-                            </div>
                         </div>
                         <h5 className="py-6">Your trade requests</h5>
                         <div className="flex flex-col gap-y-6">
