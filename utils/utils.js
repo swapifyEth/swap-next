@@ -2,34 +2,42 @@ import { ethers } from "ethers";
 
 const contractABI = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
 const contractAddress = "0x27C13a0615ab45dA17f230522CE308787f220Da0";
-const ercABI = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
+const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 
 // Create connector
 
-const provider = new ethers.providers.InfuraProvider(
-    "homestead",
-    "9bde5ac2ebc84a20928bd82154cd5f6b"
-);
+// const provider = new ethers.providers.InfuraProvider(
+//     "homestead",
+//     "9bde5ac2ebc84a20928bd82154cd5f6b"
+// );
 
 async function swapTest() {
-    // const swapContract = new ethers.Contract(
-    //     contractAddress,
-    //     contractABI.abi,
-    //     provider
-    // );
-    // const swapCount = await swapContract.swapCount();
-    // console.log(swapCount);
+    const swapContract = new ethers.Contract(
+        contractAddress,
+        contractABI.abi,
+        provider
+    );
+    const swapCount = await swapContract.swapCount();
+    console.log(swapCount);
 }
 
-async function tokenTest() {
-    const ercContract = new ethers.ContractFactory("erc721");
+async function tokkenApproval(userAddress, tokenAddress, tokenInt, provider) {
+    const tokenContract = new ethers.Contract(
+        tokenAddress,
+        erc721.abi,
+        provider
+    );
 
-    ercContract.attach("0xeE467844905022D2A6CC1dA7A0B555608faae751");
+    //Call approve
+    const tx = await tokenContract.approve(userAddress, tokenInt);
+    await tx.wait();
+    console.log(tx);
 
-    console.log(ercContract);
+    //Some kind of update?
+    return true;
 }
 
 module.exports = {
     swapTest,
-    tokenTest,
+    tokkenApproval,
 };
