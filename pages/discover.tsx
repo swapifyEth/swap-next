@@ -9,7 +9,7 @@ import abi from "../contract/artifacts/contracts/Swapify.sol/Swapify.json";
 import GreenLeft from "../public/greenLeft.svg";
 import Web3Modal from "web3modal";
 
-const swapAddress = "0x342e064B4dcC524bA3311557d42F4F80698B32F3";
+const swapAddress = "0xeF969456383e03ad7891B11cc0c0dA4d7741071c";
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 
 const Discover = () => {

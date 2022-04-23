@@ -24,7 +24,7 @@ const providerOptions = {
 
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
-const swapAddress = "0x342e064B4dcC524bA3311557d42F4F80698B32F3";
+const swapAddress = "0xeF969456383e03ad7891B11cc0c0dA4d7741071c";
 
 import { WebSocketProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
@@ -203,6 +203,7 @@ export default function Home() {
                                                 tokenId={swap.tokenId}
                                                 contract={swap.contract}
                                                 description={swap.description}
+                                                address={swap.seller}
                                             />
                                             <Cross />
                                         </>
