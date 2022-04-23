@@ -10,10 +10,10 @@ const VNFTCard = ({ active, image, name, onApprove }) => {
                 active && "border-4 border-green-400 p-1 rounded-xl"
             )}
         >
-            <div className="bg-swapify-purple h-32 w-full relative">
+            <div className="bg-swapify-purple h-32 w-full relative rounded-lg">
                 {/* Image goes here */}
 
-                <Image src={image} layout="fill" alt="" />
+                <Image src={image} layout="fill" alt="" className="rounded-lg" />
             </div>
             <div>
                 <h1>{name}</h1>
