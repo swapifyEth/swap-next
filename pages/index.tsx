@@ -181,10 +181,10 @@ export default function Home() {
 
     return (
         <>
-            <div className="min-h-screen w-4/5 mx-auto">
+            <div className="min-h-screen">
                 <Header active={HeaderActive.Swaps} />
                 {address ? (
-                    <div className="mx-4 my-8 w-full" data-aos="fade-up">
+                    <div className="mx-4 my-8 w-4/5 mx-auto" data-aos="fade-up">
                         <OpenSwap toggle={toggle} />
                         <div className="flex flex-col gap-y-6 pb-6 pt-4">
                             <h1 className="text-3xl">Your open swap</h1>
