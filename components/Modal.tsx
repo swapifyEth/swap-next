@@ -71,10 +71,7 @@ const Modal = ({
                                   }}
                                   onSubmit={(values, { setSubmitting }) => {
                                       setTimeout(() => {
-                                          values.nfts = selected;
-                                          alert(
-                                              JSON.stringify(values, null, 2)
-                                          );
+                                          createSwap(values.description);
                                           setSubmitting(false);
                                           hide();
                                       }, 400);

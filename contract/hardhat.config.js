@@ -10,13 +10,13 @@ const { PRIVATE_KEY, ETHERSCAN_TOKEN, WEB3_INFURA_PROJECT_ID } = process.env;
 
 module.exports = {
     solidity: "0.8.4",
-    defaultNetwork: "hardhat",
+    defaultNetwork: "rinkeby",
     networks: {
         hardhat: {},
-        // rinkeby: {
-        //     url: `https://rinkeby.infura.io/v3/${WEB3_INFURA_PROJECT_ID}`,
-        //     accounts: [`0x${PRIVATE_KEY}`],
-        // },
+        rinkeby: {
+            url: `https://rinkeby.infura.io/v3/${WEB3_INFURA_PROJECT_ID}`,
+            accounts: [`0x${PRIVATE_KEY}`],
+        },
 
         boba: {
             url: "https://rinkeby.boba.network",
@@ -37,7 +37,7 @@ module.exports = {
             url: "https://amsterdam.skalenodes.com/v1/attractive-muscida",
             chainId: 3092851097537429,
             from: [`0x${PRIVATE_KEY}`],
-        }
+        },
     },
     solidity: {
         version: "0.8.4",

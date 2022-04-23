@@ -24,7 +24,7 @@ const providerOptions = {
 
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
-const swapAddress = "0x27C13a0615ab45dA17f230522CE308787f220Da0";
+const swapAddress = "0xDcec92d40A64eAD7Ece4dd3e3090Dcc411156007";
 
 import { WebSocketProvider } from "@ethersproject/providers";
 import { useState } from "react";
@@ -88,16 +88,16 @@ export default function Home() {
             signer
         );
 
-        const data = await contract.userSwaps(address, 0);
-        console.log(data);
-        // const tx = await contract.createSwap(
-        //     [approved.contractAddress],
-        //     [approved.tokenId],
-        //     "this is a test trade"
-        // );
-        // const result = await tx.wait();
-        // console.log(result);
-        //Call the create swap
+        // const data = await contract.userSwaps(address, 0);
+        // console.log(data);
+        const tx = await contract.createSwap(
+            [approved.contractAddress],
+            [approved.tokenId],
+            description
+        );
+        const result = await tx.wait();
+        console.log(result);
+        toggle();
     };
 
     const { isShowing, toggle } = useModal();
