@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Swapify20 {
     struct Swap {
-        Status status; //[0]
-        string description; // [1]
-        address seller; //
-        address buyer; // 0
-        address[] swapTokens; //
-        uint256[] swapTokenIds; //
+        Status status;
+        string description;
+        address seller;
+        address buyer;
+        address[] swapTokens;
+        uint256[] swapTokenIds;
         uint256 swapId; //
     }
 

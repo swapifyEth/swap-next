@@ -3,17 +3,16 @@ const hre = require("hardhat");
 
 async function main() {
 
-    // Test token 
-    const Token = await hre.ethers.getContractFactory("Token");
-    const originalToken = await Token.deploy();
 
-    await originalToken.deployed();
-    console.log("Token deployed to:", originalToken.address);
-
-    const token = await hre.ethers.getContractAt("ERC721", originalToken.address);
+    const tokenAddress = "0x.....";
+    const token = await hre.ethers.getContractAt("ERC721", tokenAddress);
+    const user = "0x....";
+    const swapifyAddress = "...";
+    const tokenId = 200;
+    await token.connect(user).approve(swapifyAddress, tokenId);
 
     // get signer, buyer and seller
-    const [signer, seller, buyer] = await ethers.getSigners();
+    const [signer, seller] = await ethers.getSigners();
     console.log("signer:", signer.address);
     console.log("seller:", seller.address);
 
