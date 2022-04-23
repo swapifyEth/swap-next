@@ -1,12 +1,33 @@
+import { ethers } from "ethers";
 import Header, { HeaderActive } from "../components/Header";
+import {useState} from "react";
 import Modal from "../components/Modal";
 import NFTCard from "../components/NFTCard";
 import OpenSwap from "../components/OpenSwap";
 import useModal from "../hooks/showModal";
-
+import abi from '../contract/artifacts/contracts/Swapify.sol/Swapify.json';
 import GreenLeft from "../public/greenLeft.svg";
+import Web3Modal from 'web3modal';
 
 const Discover = () => {
+
+    const [nfts, setNfts] = useState([])
+    async function getData() {
+        const address = "0x230C3F1DeB92cdf4bE58ECE0800cc2be94157013";
+        const web3Modal = new Web3Modal({
+            network: "rinkeby", // optional
+            cacheProvider: true, // optional
+        })
+        const connection = await web3Modal.connect()
+        const provider = new ethers.providers.Web3Provider(connection);
+        const signer = provider.getSigner();
+    
+        const contract = new ethers.Contract(address, abi.abi, signer);
+        console.log(contract);
+        const index = await contract.swapCount();
+    }
+    getData();
+
     const { isShowing, toggle } = useModal();
     return (
         <>
