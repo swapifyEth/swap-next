@@ -15,6 +15,7 @@ const Modal = ({
     approved,
     address,
     txLoad,
+    swapId,
 }) => {
     const [selected, setSelected] = React.useState([false, false, false]);
     const [loading, setLoading] = React.useState(false);
@@ -50,7 +51,11 @@ const Modal = ({
                       data-aos="fade-in"
                   >
                       <div className="w-1/3 h-full flex items-center mx-auto">
-                          <div className={clsx("p-4 rounded-xl bg-swapify-gray w-full")}>
+                          <div
+                              className={clsx(
+                                  "p-4 rounded-xl bg-swapify-gray w-full"
+                              )}
+                          >
                               <div className="flex flex-row items-center justify-between">
                                   <h1 className="text-3xl pb-4">
                                       Choose NFT (S)
@@ -72,7 +77,11 @@ const Modal = ({
                                   }}
                                   onSubmit={(values, { setSubmitting }) => {
                                       setTimeout(() => {
-                                          createSwap(values.description);
+                                          if (swapId) {
+                                              createSwap(swapId);
+                                          } else {
+                                              createSwap(values.description);
+                                          }
                                           setSubmitting(false);
                                           hide();
                                       }, 400);
@@ -91,28 +100,32 @@ const Modal = ({
                                                               : false
                                                       }
                                                       name={nft?.metadata?.name}
-                                                      onApprove={async ()  =>
-                                                        {
-                                                            setLoading(true);
+                                                      onApprove={async () => {
+                                                          setLoading(true);
                                                           approveNft(
                                                               nft?.contract
                                                                   ?.address,
                                                               nft?.id?.tokenId
-                                                          )
-                                                            setLoading(false);
-                                                        }
+                                                          );
+                                                          setLoading(false);
+                                                      }}
+                                                      image={
+                                                          nft?.metadata?.image
                                                       }
-                                                      image={nft?.metadata?.image}
                                                   />
                                               ))}
                                           </div>
-                                          <label>Description</label>
-                                          <Field
-                                              type="text"
-                                              className="pl-1 mr-6 mb-4 rounded py-1 text-black"
-                                              name="description"
-                                              placeholder="I am looking for..."
-                                          />
+                                          {!swapId && (
+                                              <>
+                                                  <label>Description</label>
+                                                  <Field
+                                                      type="text"
+                                                      className="pl-1 mr-6 mb-4 rounded py-1 text-black"
+                                                      name="description"
+                                                      placeholder="I am looking for..."
+                                                  />
+                                              </>
+                                          )}
                                           {approved && (
                                               <div className="w-full">
                                                   <button

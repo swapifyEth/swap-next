@@ -117,6 +117,8 @@ export default function Home() {
 
         // const data = await contract.userSwaps(address, 0);
         // console.log(data);
+
+        console.log(swapId);
         const tx = await contract.acceptOffer(swapId, offerId);
         setTxLoad(true);
         const result = await tx.wait();
@@ -137,21 +139,23 @@ export default function Home() {
         let swaps = [];
         console.log("started getting waps");
         for (let index = 0; index < Number(userCount); index++) {
-            let swap = await contract.userSwaps(address, 0);
+            let swap = await contract.userSwaps(address, index);
             const swapDetails = await contract.getSwapToken(swap.swapId, 0);
 
             //Check it exists
             let offer;
             let offerDetails;
 
+            console.log("OFFFER EXISTS");
+
             const exists = await contract.offerExists(swap.swapId);
+            console.log(exists);
             if (exists) {
                 offer = await contract.offers(swap.swapId, 0);
-                const offerDetails = await contract.getOfferToken(
-                    swap.swapId,
-                    0,
-                    0
-                );
+                console.log("THIS IS OFFER");
+                console.log(offer);
+                offerDetails = await contract.getOfferToken(swap.swapId, 0, 0);
+                console.log("OFFFER EXISTS");
                 console.log(offerDetails);
             }
 
@@ -161,7 +165,7 @@ export default function Home() {
                 contract: swapDetails.token,
                 description: swap.description,
                 buyer: swap.buyer,
-                offerId: offer?.id,
+                offerId: 0,
                 offerToken: offerDetails?.tokenId,
                 offerAddress: offerDetails?.token,
                 status: swap.status,
@@ -202,11 +206,15 @@ export default function Home() {
 
                                                 {swap?.offerToken && (
                                                     <>
+                                                        <h1>
+                                                            offer lets
+                                                            goooo!!!!!
+                                                        </h1>
                                                         <Tick
-                                                            accept={() =>
+                                                            acceptSwap={() =>
                                                                 acceptSwap(
                                                                     swap.swapId,
-                                                                    swap.offerId
+                                                                    0
                                                                 )
                                                             }
                                                         />
