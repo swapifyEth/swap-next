@@ -115,6 +115,7 @@ contract Swapify {
     ) public {
         // check lengths
         require(_offerTokens.length == _offerTokenIds.length, "!length");
+        require(_swapId < swapCount, "Invalid _swapId");
         //create offer
         Offer memory offer_ = Offer(
             Status.CREATED,
@@ -150,7 +151,7 @@ contract Swapify {
     {
         require(
             offers[_swapId][_offerId].status == Status.CREATED,
-            "Can't Accept now"
+            "Cant Accept now"
         );
         // addresses
         address seller = swaps[_swapId].seller;

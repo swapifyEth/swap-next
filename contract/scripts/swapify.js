@@ -38,7 +38,7 @@ async function main() {
 
 
     // Approve swapify to spend token 0
-    await token.connect(seller).approve(swapify.address, 0);
+    await token.connect(seller).approve(swapify.address, 0x00);
     console.log("seller approved contract");
 
     // create swap
