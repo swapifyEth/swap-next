@@ -84,8 +84,6 @@ async function main() {
     console.log("Balance of Token20 of", seller.address, " is: ", (await token20.balanceOf(seller.address)).toNumber());
 
 
-
-
 }
 
 // We recommend this pattern to be able to use async/await everywhere

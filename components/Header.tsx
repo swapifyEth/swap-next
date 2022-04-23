@@ -23,13 +23,11 @@ return (
         <Logo />
     </div>
     <div className="flex flex-row items-center gap-x-32 h-full">
-        <Link href="/"><h3 className={clsx(classes.link, active == HeaderActive.Swaps && classes.linkActive)}>Swaps</h3></Link>
-        <Link href="/discover"><h3 className={clsx(classes.link, active == HeaderActive.Discover && classes.linkActive)}>Discover</h3></Link>
-        <Link href="/profile"><h3 className={clsx(classes.link, active == HeaderActive.Profile && classes.linkActive)}>Profile</h3></Link>
+        <Link passHref href="/"><h3 className={clsx(classes.link, active == HeaderActive.Swaps && classes.linkActive)}>Swaps</h3></Link>
+        <Link passHref href="/discover"><h3 className={clsx(classes.link, active == HeaderActive.Discover && classes.linkActive)}>Discover</h3></Link>
+        <Link passHref href="/profile"><h3 className={clsx(classes.link, active == HeaderActive.Profile && classes.linkActive)}>Profile</h3></Link>
     </div>
-    <div className="flex flex-row items-center gap-x-4">
-        <Twitter />
-        <Medium />
+    <div>
     </div>
 </header>
 );

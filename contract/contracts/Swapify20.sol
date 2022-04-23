@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Swapify20 {
     struct Swap {
-        Status status; //[0]
-        string description; // [1]
-        address seller; //
-        address buyer; // 0
-        address[] swapTokens; //
-        uint256[] swapTokenIds; //
+        Status status;
+        string description;
+        address seller;
+        address buyer;
+        address[] swapTokens;
+        uint256[] swapTokenIds;
         uint256 swapId; //
     }
 
@@ -31,6 +31,8 @@ contract Swapify20 {
     mapping(uint256 => Offer[]) public offers;
     mapping(address => Swap[]) public userSwaps; // contract.userSwaps(address)
     mapping(address => Offer[]) public userOffers;
+    mapping(address => uint256) public userSwapCount;
+    mapping(address => uint256) public userOffersCount;
 
     event SwapCreated(address seller, address[] tokens, uint256[] tokenIds);
     event OfferProposed(
@@ -116,6 +118,7 @@ contract Swapify20 {
         swaps[swapId] = swap_;
         userSwaps[msg.sender].push(swap_);
         swapCount++;
+        userSwapCount[msg.sender]++;
 
         emit SwapCreated(msg.sender, _swapTokens, _swapTokenIds);
     }
@@ -142,6 +145,7 @@ contract Swapify20 {
             _swapId
         );
 
+        userOffersCount[msg.sender]++;
         offers[_swapId].push(offer_);
         userOffers[msg.sender].push(offer_);
 
