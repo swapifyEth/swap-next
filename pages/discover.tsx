@@ -36,7 +36,7 @@ const Discover = () => {
                 <h1 className="text-3xl mt-20 mb-4">Discover</h1>
                 <div className="flex flex-col gap-y-6" data-aos="fade-in">
                     <div className="flex flex-row items-center gap-x-10">
-                        <NFTCard />
+                        {/* <NFTCard /> */}
                         <div className="flex flex-col gap-y-4">
                             <GreenLeft />
                         </div>
