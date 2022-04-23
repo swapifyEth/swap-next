@@ -140,10 +140,12 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col gap-y-6">
                             <div className="flex flex-row items-center gap-x-10">
+                              <>
                                 {userSwaps.map(() => {
                                     <NFTCard />;
                                 })}
                                 <Cross />
+                              </>
                             </div>
                         </div>
                         <h5 className="py-6">Your trade requests</h5>

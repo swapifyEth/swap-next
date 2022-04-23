@@ -201,4 +201,18 @@ contract Swapify {
     }
 
     function rejectOffer() public {}
+
+
+
+    function getSwapToken(uint256 _swapId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
+        token = swaps[_swapId].swapTokens[_tokenNumber];
+        tokenId = swaps[_swapId].swapTokenIds[_tokenNumber];
+        tokenNumbers = swaps[_swapId].swapTokens.length;
+    }
+
+    function getOfferToken(uint256 _swapId, uint256 _offerId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
+        token = offers[_swapId][_offerId].offerTokens[_tokenNumber];
+        tokenId = offers[_swapId][_offerId].offerTokenIds[_tokenNumber];
+        tokenNumbers = offers[_swapId][_offerId].offerTokenIds.length;
+    }
 }

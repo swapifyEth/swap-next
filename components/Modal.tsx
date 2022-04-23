@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import VNFTCard from "./VNFTCard";
 import { Formik, Form, Field } from "formik";
-
 import axios from "axios";
+import clsx from "clsx";
 
 const Modal = ({
     isShowing,
@@ -17,7 +17,7 @@ const Modal = ({
     txLoad,
 }) => {
     const [selected, setSelected] = React.useState([false, false, false]);
-
+    const [loading, setLoading] = React.useState(false);
     //Load wallet nfts
     const [nfts, setNfts] = useState([]);
 
@@ -34,6 +34,7 @@ const Modal = ({
 
                 if (result?.data?.ownedNfts?.length > 0) {
                     setNfts(result?.data?.ownedNfts.splice(0, 3));
+                    console.log(nfts);
                 }
             } catch (err) {
                 console.error(err);
@@ -49,7 +50,7 @@ const Modal = ({
                       data-aos="fade-in"
                   >
                       <div className="w-1/3 h-full flex items-center mx-auto">
-                          <div className="p-4 rounded-xl bg-swapify-gray w-full">
+                          <div className={clsx("p-4 rounded-xl bg-swapify-gray w-full")}>
                               <div className="flex flex-row items-center justify-between">
                                   <h1 className="text-3xl pb-4">
                                       Choose NFT (S)
@@ -90,14 +91,18 @@ const Modal = ({
                                                               : false
                                                       }
                                                       name={nft?.metadata?.name}
-                                                      onApprove={() =>
+                                                      onApprove={async ()  =>
+                                                        {
+                                                            setLoading(true);
                                                           approveNft(
                                                               nft?.contract
                                                                   ?.address,
                                                               nft?.id?.tokenId
                                                           )
+                                                            setLoading(false);
+                                                        }
                                                       }
-                                                      image={""}
+                                                      image={nft?.metadata?.image}
                                                   />
                                               ))}
                                           </div>
