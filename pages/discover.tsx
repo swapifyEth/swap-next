@@ -66,8 +66,11 @@ const Discover = () => {
             signer
         );
 
+        console.log(contractAddress);
+        console.log(tokenId);
+
         //Call approve
-        const tx = await tokenContract.approve(contractAddress, tokenId);
+        const tx = await tokenContract.approve(swapAddress, tokenId);
         setTxLoad(true);
         const result = await tx.wait();
 

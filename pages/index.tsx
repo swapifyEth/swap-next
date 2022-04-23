@@ -79,7 +79,7 @@ export default function Home() {
         );
 
         //Call approve
-        const tx = await tokenContract.approve(contractAddress, tokenId);
+        const tx = await tokenContract.approve(swapAddress, tokenId);
         setTxLoad(true);
         const result = await tx.wait();
 
