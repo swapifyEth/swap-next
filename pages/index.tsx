@@ -27,7 +27,7 @@ const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapif
 const swapAddress = "0xDcec92d40A64eAD7Ece4dd3e3090Dcc411156007";
 
 import { WebSocketProvider } from "@ethersproject/providers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cross from "../components/Cross";
 import Footer from "../components/Footer";
 import Modal from "../components/Modal";
@@ -40,8 +40,13 @@ export default function Home() {
     const [approved, setApproved] = useState(null);
     const [provider, setProvider] = useState(null);
     const [signer, setSigner] = useState(null);
+    const [userSwaps, setUserSwaps] = useState([]);
 
     const [txLoad, setTxLoad] = useState(false);
+
+    useEffect(() => {
+        if (address) getOpenSwaps();
+    }, [address]);
 
     const connectWallet = async () => {
         if (window) {
@@ -100,6 +105,28 @@ export default function Home() {
         toggle();
     };
 
+    const getOpenSwaps = async () => {
+        const contract = new ethers.Contract(
+            swapAddress,
+            swapContract.abi,
+            signer
+        );
+
+        const userCount = await contract.userSwapCount(address);
+        console.log(userCount);
+
+        //Loop through
+        let swaps = [];
+        for (let index = 0; index < Number(userCount); index++) {
+            let swap = await contract.userSwaps(address, index);
+            swaps.push(swap);
+        }
+
+        setUserSwaps(swaps);
+
+        console.log(swaps[0][4]);
+    };
+
     const { isShowing, toggle } = useModal();
 
     return (
@@ -115,7 +142,9 @@ export default function Home() {
                         </div>
                         <div className="flex flex-col gap-y-6">
                             <div className="flex flex-row items-center gap-x-10">
-                                <NFTCard />
+                                {userSwaps.map(() => {
+                                    <NFTCard />;
+                                })}
                                 <Cross />
                             </div>
                         </div>
