@@ -196,7 +196,7 @@ export default function Home() {
                                     key={swap.swapId}
                                     className="flex flex-row w-screen items-center gap-x-10"
                                 >
-                                    {swap.status == 1 && (
+                                    {(swap.status == 1 && !(swap?.offerToken)) && (
                                         <>
                                             <NFTCard
                                                 tokenId={swap.tokenId}
@@ -204,11 +204,28 @@ export default function Home() {
                                                 description={swap.description}
                                             />
                                             <Cross />
-
-                                            {swap?.offerToken && (
-                                                <>
+                                        </>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                        <h5 className="py-6">Your trade requests</h5>
+                        <div className="flex flex-col gap-y-6">
+                            {userSwaps.map((swap) => (
+                                <div
+                                    key={swap.swapId}
+                                    className="flex flex-row w-screen items-center gap-x-10"
+                                >
+                                    {(swap.status == 1 && swap?.offerToken) &&(
+                                        <>
+                                            <NFTCard
+                                                tokenId={swap.tokenId}
+                                                contract={swap.contract}
+                                                description={swap.description}
+                                            />
+                                            <Cross />
                                                     <h1>
-                                                        offer lets goooo!!!!!
+                                                        Recieved an offer
                                                     </h1>
                                                     <Tick
                                                         acceptSwap={() =>
@@ -219,23 +236,10 @@ export default function Home() {
                                                         }
                                                     />
                                                     {/* //<NFTCard /> */}
-                                                </>
-                                            )}
                                         </>
                                     )}
                                 </div>
                             ))}
-                        </div>
-                        <h5 className="py-6">Your trade requests</h5>
-                        <div className="flex flex-col gap-y-6">
-                            <div className="flex flex-row items-center gap-x-10">
-                                {/* <NFTCard />
-                                <div className="flex flex-col gap-y-4">
-                                    <Tick />
-                                    <Cross />
-                                </div>
-                                <NFTCard /> */}
-                            </div>
                         </div>
                     </div>
                 ) : (
@@ -253,6 +257,7 @@ export default function Home() {
                 )}
             </div>
             <Modal
+                swapId
                 approveNft={approveNft}
                 approvedNft={approved}
                 approved={approved}

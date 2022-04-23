@@ -102,11 +102,13 @@ const Discover = () => {
             <div>
                 <h1 className="text-3xl mt-20 mb-4">Discover</h1>
                 <div className="flex flex-col gap-y-6" data-aos="fade-in">
-                    <div className="flex flex-row items-center gap-x-10">
                         {openSwaps.map((swap) => {
                             return (
-                                <div key={swap.swapId}>
+                                <div  key={swap.swapId} className="flex flex-col items-center gap-x-10">
+                                <div className="flex flex-row w-screen items-center">
+                                    <>
                                     <NFTCard
+                                        description={swap.description}
                                         tokenId={swap.tokenId}
                                         contract={swap.contract}
                                     />
@@ -118,6 +120,8 @@ const Discover = () => {
                                     >
                                         propose offer
                                     </button>
+                                    </>
+                                </div>
                                 </div>
                             );
                         })}
@@ -127,7 +131,6 @@ const Discover = () => {
                         </div>
                         {/* <OpenSwap toggle={toggle}/> */}
                     </div>
-                </div>
             </div>
             <Modal
                 approveNft={approveNft}
