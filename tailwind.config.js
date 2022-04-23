@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        primary: ['GeneralSans'],
+      },
       colors: {
         "swapify-purple": "#8247e5",
         "swapify-gray": "#101418"
