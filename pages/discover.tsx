@@ -114,6 +114,7 @@ const Discover = () => {
                                 <div className="flex flex-row gap-x-10  items-center">
                                     <>
                                         <NFTCard
+                                            address={swap.address}
                                             description={swap.description}
                                             tokenId={swap.tokenId}
                                             contract={swap.contract}
