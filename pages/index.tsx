@@ -210,7 +210,6 @@ export default function Home() {
                                                 description={swap.description}
                                                 address={swap.seller}
                                             />
-                                            <Cross />
                                         </>
                                     )}
                                 </div>
