@@ -28,7 +28,7 @@ const NFTCard = ({ description, tokenId, contract }) => {
     }
 
     return (
-        <div className="rounded-xl flex flex-row items-center bg-swapify-gray gap-x-6 text-3xl w-1/3 h-48">
+        <div className="rounded-xl flex flex-row items-center bg-swapify-gray gap-x-6 text-3xl h-48">
             <div className="bg-swapify-purple h-full w-48 rounded-l-xl relative">
                 <Image alt="" layout="fill" src={nft?.image} />
             </div>

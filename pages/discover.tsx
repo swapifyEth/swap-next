@@ -99,36 +99,36 @@ const Discover = () => {
     return (
         <>
             <Header active={HeaderActive.Discover} />
-            <div>
+            <div className="w-4/5 mx-auto">
                 <h1 className="text-3xl mt-20 mb-4">Discover</h1>
                 <div className="flex flex-col gap-y-6" data-aos="fade-in">
                         {openSwaps.map((swap) => {
                             return (
-                                <div  key={swap.swapId} className="flex flex-col items-center gap-x-10">
-                                <div className="flex flex-row w-screen items-center">
+                                <div  key={swap.swapId} className="flex  flex-col gap-x-10">
+                                <div className="flex flex-row gap-x-10  items-center">
                                     <>
                                     <NFTCard
                                         description={swap.description}
                                         tokenId={swap.tokenId}
                                         contract={swap.contract}
                                     />
+                                    <div className="flex flex-col gap-y-4">
+                                        <GreenLeft />
+                                    </div>
                                     <button
                                         onClick={() => {
                                             toggle();
                                             setSwapId(swap.swapId);
                                         }}
+                                        className="bg-swapify-purple px-10 text-sm font-bold py-2 rounded-full hover:bg-purple-600"
                                     >
-                                        propose offer
+                                        Propose offer
                                     </button>
                                     </>
                                 </div>
                                 </div>
                             );
                         })}
-
-                        <div className="flex flex-col gap-y-4">
-                            <GreenLeft />
-                        </div>
                         {/* <OpenSwap toggle={toggle}/> */}
                     </div>
             </div>

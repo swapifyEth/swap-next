@@ -181,7 +181,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="min-h-screen">
+            <div className="min-h-screen w-4/5 mx-auto">
                 <Header active={HeaderActive.Swaps} />
                 {address ? (
                     <div className="mx-4 my-8 w-full" data-aos="fade-up">
@@ -194,7 +194,7 @@ export default function Home() {
                             {userSwaps.map((swap) => (
                                 <div
                                     key={swap.swapId}
-                                    className="flex flex-row w-screen items-center gap-x-10"
+                                    className="flex flex-row items-center gap-x-10"
                                 >
                                     {(swap.status == 1 && !(swap?.offerToken)) && (
                                         <>
