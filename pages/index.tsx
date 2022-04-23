@@ -113,18 +113,16 @@ export default function Home() {
         );
 
         const userCount = await contract.userSwapCount(address);
-        console.log(userCount);
 
         //Loop through
         let swaps = [];
         for (let index = 0; index < Number(userCount); index++) {
-            let swap = await contract.userSwaps(address, index);
+            let swap = await contract.userSwaps(address, 0);
+            console.log(swap.swapId);
             swaps.push(swap);
         }
 
         setUserSwaps(swaps);
-
-        console.log(swaps[0][4]);
     };
 
     const { isShowing, toggle } = useModal();
