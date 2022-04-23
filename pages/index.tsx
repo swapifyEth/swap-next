@@ -191,41 +191,40 @@ export default function Home() {
                             <h5>Your NFTs up for swap</h5>
                         </div>
                         <div className="flex flex-col gap-y-6">
-                            <div className="flex flex-row items-center gap-x-10">
-                                {userSwaps.map((swap) => (
-                                    <div
-                                        key={swap.swapId}
-                                        className="flex flex-row items-center gap-x-10"
-                                    >
-                                        {swap.status == 1 && (
-                                            <>
-                                                <NFTCard
-                                                    tokenId={swap.tokenId}
-                                                    contract={swap.contract}
-                                                />
+                            {userSwaps.map((swap) => (
+                                <div
+                                    key={swap.swapId}
+                                    className="flex flex-row w-screen items-center gap-x-10"
+                                >
+                                    {swap.status == 1 && (
+                                        <>
+                                            <NFTCard
+                                                tokenId={swap.tokenId}
+                                                contract={swap.contract}
+                                                description={swap.description}
+                                            />
+                                            <Cross />
 
-                                                {swap?.offerToken && (
-                                                    <>
-                                                        <h1>
-                                                            offer lets
-                                                            goooo!!!!!
-                                                        </h1>
-                                                        <Tick
-                                                            acceptSwap={() =>
-                                                                acceptSwap(
-                                                                    swap.swapId,
-                                                                    0
-                                                                )
-                                                            }
-                                                        />
-                                                        {/* //<NFTCard /> */}
-                                                    </>
-                                                )}
-                                            </>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
+                                            {swap?.offerToken && (
+                                                <>
+                                                    <h1>
+                                                        offer lets goooo!!!!!
+                                                    </h1>
+                                                    <Tick
+                                                        acceptSwap={() =>
+                                                            acceptSwap(
+                                                                swap.swapId,
+                                                                0
+                                                            )
+                                                        }
+                                                    />
+                                                    {/* //<NFTCard /> */}
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            ))}
                         </div>
                         <h5 className="py-6">Your trade requests</h5>
                         <div className="flex flex-col gap-y-6">

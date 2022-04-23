@@ -16,7 +16,7 @@ return (
     </div>
     <div className="flex flex-col gap-y-6" data-aos="fade-in">
           <div className="flex flex-row items-center gap-x-10">
-            <NFTCard />
+            {/* <NFTCard /> */}
           </div>
         </div>
 </div>
