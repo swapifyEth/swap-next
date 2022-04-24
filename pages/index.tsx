@@ -12,15 +12,41 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 
 const providerOptions = {
     walletconnect: {
-        display: {
-            name: "Mobile",
-        },
         package: WalletConnectProvider,
         options: {
             infuraId: "9bde5ac2ebc84a20928bd82154cd5f6b", // required
         },
     },
 };
+
+// const providerOptions = {
+//   walletconnect: {
+//       package: WalletConnectProvider,
+//       options: {
+//           rpc: {
+
+//           } // required
+//       },
+//   },
+// };
+
+// const endpoint =
+//     "https://mainnet.infura.io/v3/9bde5ac2ebc84a20928bd82154cd5f6b"; // your SKALE Chain endpoint
+// const ethereumEndpoint =
+//     "https://amsterdam.skalenodes.com/v1/attractive-muscida"; // your Ethereum endpoint
+// const skaleChainId = 3092851097537429;
+
+// const providerOptions = {
+//     walletconnect: {
+//         package: WalletConnectProvider,
+//         options: {
+//             rpc: {
+//                 skaleChainId: ethereumEndpoint,
+//                 4: endpoint,
+//             },
+//         },
+//     },
+// };
 
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
