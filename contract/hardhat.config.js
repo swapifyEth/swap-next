@@ -6,7 +6,7 @@ require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 
-const { PRIVATE_KEY, ETHERSCAN_TOKEN, WEB3_INFURA_PROJECT_ID } = process.env;
+const { PRIVATE_KEY, ETHERSCAN_TOKEN, WEB3_INFURA_PROJECT_ID, POLYGONSCAN_API_KEY } = process.env;
 
 module.exports = {
     solidity: "0.8.4",
@@ -33,9 +33,19 @@ module.exports = {
             chainId: 2153,
             accounts: [`0x${PRIVATE_KEY}`],
         },
-        scale: {
+        skale: {
             url: "https://amsterdam.skalenodes.com/v1/attractive-muscida",
             chainId: 3092851097537429,
+            accounts: [`0x${PRIVATE_KEY}`],
+        },
+        mumbai: {
+            url: "https://matic-mumbai.chainstacklabs.com",
+            chainId: 80001,
+            accounts: [`0x${PRIVATE_KEY}`],
+        },
+        optimKovan: {
+            url: "https://kovan.optimism.io/",
+            chainId: 69,
             accounts: [`0x${PRIVATE_KEY}`],
         },
     },
@@ -49,7 +59,7 @@ module.exports = {
         },
     },
     etherscan: {
-        apiKey: ETHERSCAN_TOKEN,
+        apiKey: ETHERSCAN_TOKEN, // POLYGONSCAN_API_KEY
         verify: true,
     },
 };
