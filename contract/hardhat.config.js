@@ -6,7 +6,7 @@ require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
 
-const { PRIVATE_KEY, ETHERSCAN_TOKEN, WEB3_INFURA_PROJECT_ID, POLYGONSCAN_API_KEY } = process.env;
+const { PRIVATE_KEY, ETHERSCAN_TOKEN, WEB3_INFURA_PROJECT_ID, POLYGONSCAN_API_KEY, OPTIMISM_API_KEY } = process.env;
 
 module.exports = {
     solidity: "0.8.4",
@@ -48,6 +48,18 @@ module.exports = {
             chainId: 69,
             accounts: [`0x${PRIVATE_KEY}`],
         },
+        polygon: {
+            url: "https://polygon-rpc.com/",
+            chainId: 137,
+            accounts: [`0x${PRIVATE_KEY}`],
+        },
+
+        optimism: {
+            url: "https://mainnet.optimism.io/",
+            chainId: 10,
+            accounts: [`0x${PRIVATE_KEY}`],
+        },
+
     },
     solidity: {
         version: "0.8.4",
@@ -59,7 +71,7 @@ module.exports = {
         },
     },
     etherscan: {
-        apiKey: ETHERSCAN_TOKEN, // POLYGONSCAN_API_KEY
+        apiKey: ETHERSCAN_TOKEN, //POLYGONSCAN_API_KEY,/*ETHERSCAN_TOKEN,*/ // POLYGONSCAN_API_KEY
         verify: true,
     },
 };
