@@ -11,6 +11,17 @@ import Web3Modal from "web3modal";
 
 const swapAddress = "0xeF969456383e03ad7891B11cc0c0dA4d7741071c";
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
+import WalletConnectProvider from "@walletconnect/web3-provider";
+// Create connector
+
+const providerOptions = {
+    walletconnect: {
+        package: WalletConnectProvider,
+        options: {
+            infuraId: "9bde5ac2ebc84a20928bd82154cd5f6b", // required
+        },
+    },
+};
 
 const Discover = () => {
     const [openSwaps, setOpenSwaps] = useState([]);
@@ -29,6 +40,7 @@ const Discover = () => {
         const web3Modal = new Web3Modal({
             network: "rinkeby", // optional
             cacheProvider: true, // optional
+            providerOptions,
         });
         const connection = await web3Modal.connect();
         const provider = new ethers.providers.Web3Provider(connection);
@@ -51,6 +63,7 @@ const Discover = () => {
                     tokenId: swapDetails.tokenId,
                     contract: swapDetails.token,
                     description: swap.description,
+                    seller: swap.seller,
                     buyer: swap.buyer,
                     status: swap.status,
                 });
@@ -114,7 +127,7 @@ const Discover = () => {
                                 <div className="flex flex-row gap-x-10  items-center">
                                     <>
                                         <NFTCard
-                                            address={swap.address}
+                                            address={swap.seller}
                                             description={swap.description}
                                             tokenId={swap.tokenId}
                                             contract={swap.contract}
