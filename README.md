@@ -32,3 +32,47 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Deployed Contracts:
+
+
+### Polygon Mainnet - Verified
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://polygonscan.com/address/0x27c13a0615ab45da17f230522ce308787f220da0#code)
+
+### Optimism Mainnet - Verified 
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://optimistic.etherscan.io/address/0x27C13a0615ab45dA17f230522CE308787f220Da0#code)
+
+### Mumbai - Verified
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://polygonscan.com/address/0x27C13a0615ab45dA17f230522CE308787f220Da0)
+
+### Rinkeby - Verified
+Address: 0xD60Dff692CbD5F96f097438874c44e7Cfa794bCF <br />
+[Link](https://rinkeby.etherscan.io/address/0xD60Dff692CbD5F96f097438874c44e7Cfa794bCF#code)
+
+
+### Optimism Kovan 
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://kovan-optimistic.etherscan.io/address/0x27C13a0615ab45dA17f230522CE308787f220Da0)
+
+### BOBA - Rinkeby 
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://blockexplorer.rinkeby.boba.network/address/0x27C13a0615ab45dA17f230522CE308787f220Da0/transactions)
+
+### Findora  - Testnet
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://testnet-anvil.evm.findorascan.io/address/0x27C13a0615ab45dA17f230522CE308787f220Da0/transactions)
+
+### Skale - Testnet
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://attractive-muscida.explorer.amsterdam.skalenodes.com/address/0x27C13a0615ab45dA17f230522CE308787f220Da0/transactions)
+
+### Evmos - Testnet
+Address: 0x27C13a0615ab45dA17f230522CE308787f220Da0 <br />
+[Link](https://evm.evmos.dev/address/0x27C13a0615ab45dA17f230522CE308787f220Da0/transactions)
+
+
+
+
