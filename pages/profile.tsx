@@ -1,6 +1,5 @@
 import Header, { HeaderActive } from "../components/Header";
 import NFTCard from "../components/NFTCard";
-import Image from "next/image";
 import useModal from "../hooks/showModal";
 import Web3Modal from "web3modal";
 import { ethers } from "ethers";
@@ -69,7 +68,7 @@ const Profile = () => {
             <div>
                 <h1 className="text-3xl mt-20 mb-4">Profile</h1>
                 <div className="flex flex-row gap-x-3 my-6">
-                    <Image alt="" width="32" height="32" src="/Avatar.png" />
+                    <img alt="" width="32" height="32" src="/Avatar.png" />
                     <p>{address}</p>
                 </div>
                 <div className="flex flex-col gap-y-6" data-aos="fade-in">
@@ -86,7 +85,6 @@ const Profile = () => {
             </div>
         </>
     );
->>>>>>> fd6fbd02c6a2d048ff7cd5220cf13ec708a765f3
 };
 
 export default Profile;

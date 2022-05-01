@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Image from 'next/image';
+// import Image from 'next/image';
 const VNFTCard = ({ active, image, name, onApprove }) => {
     console.log(image);
     return (
@@ -13,7 +13,7 @@ const VNFTCard = ({ active, image, name, onApprove }) => {
             <div className="bg-swapify-purple h-32 w-full relative rounded-lg">
                 {/* Image goes here */}
 
-                <Image src={image} layout="fill" alt="" className="rounded-lg" />
+                <img src={image} alt="" className="rounded-lg" />
             </div>
             <div>
                 <h1>{name}</h1>
