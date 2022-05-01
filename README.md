@@ -1,11 +1,11 @@
 
 ## Project Description
-Swapify is a peer-to-peer trustless NFT swap dapp. It allows user to put NFTs they want to swap for offer, other users can then make offers (ERC721 or ERC20).The party that created the swap will then be able to accept the swap, and if they don’t accept the other party will be able to counter-propose by adding more/different NFTs or topping the offer with ERC20. When both parties are happy, the swap-creator will be able to accept, and the NFTs will be safely swapped.
+Swapify is a peer-to-peer trustless NFT swap dapp. It allows user to put NFTs they want to swap for offer, other users can then make offers (ERC721 and/or ERC20).The party that created the swap will then be able to accept the swap, and if they don’t accept the other party will be able to counter-propose by adding more/different NFTs or topping the offer with ERC20. When both parties are happy, the swap-creator will be able to accept, and the NFTs will be safely swapped.
 
 ## Swap flow example
 1. Alice has a bored ape that she wants to swap, she put it on offer along with a description : *Looking for a Doodle or a very rare Alien fren*
 2. Bob sees the offer and propose his Alien fren and a Cool Cat and 20 WETH.
-3. Alice likes the Alien but given the floor prices of the collection comments on the swap asking for a better offer.
+3. Alice likes the Alien but given the floor prices of the collection, she comments on the swap asking for a better offer.
 4. Bob adds 20WETH to top the offer.
 5. Alice accept, and items are swapped.
 
@@ -18,7 +18,7 @@ Swapify is a peer-to-peer trustless NFT swap dapp. It allows user to put NFTs th
 We would like to play on the social aspect of the project:
  - Add possibility for users to comment/like/share swap after signing in with their Ethereum address.
  - Feature hottest swaps on the discover feed.
- - Add premium accounts, where user can pay a fee to have their swaps feature on top of the discover feed.
+ - Add premium accounts feature, where user can pay a fee to have their swaps feature on top of the discover feed.
 
 ## Deployed Contracts:
 
