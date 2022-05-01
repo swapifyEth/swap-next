@@ -3,10 +3,11 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Swapify {
     struct Swap {
-        Status status; //[0]
+        Status status; // [0]
         string description; // [1]
         address seller; //
         address buyer; // 0
@@ -24,9 +25,11 @@ contract Swapify {
     }
 
     uint256 public swapCount;
+
+    // 5 swaps
+
     mapping(uint256 => Swap) public swaps;
     mapping(uint256 => Offer[]) public offers;
-    mapping(uint256 => bool) public offerExists;
     mapping(address => Swap[]) public userSwaps; // contract.userSwaps(address)
     mapping(address => Offer[]) public userOffers;
     mapping(address => uint256) public userSwapCount;
@@ -104,10 +107,10 @@ contract Swapify {
             swapId
         );
         // populate mappings/arrays
+        userSwapCount[msg.sender]++;
         swaps[swapId] = swap_;
         userSwaps[msg.sender].push(swap_);
         swapCount++;
-        userSwapCount[msg.sender]++;
 
         emit SwapCreated(msg.sender, _swapTokens, _swapTokenIds);
     }
@@ -119,7 +122,6 @@ contract Swapify {
     ) public {
         // check lengths
         require(_offerTokens.length == _offerTokenIds.length, "!length");
-        require(_swapId < swapCount, "Invalid _swapId");
         //create offer
         Offer memory offer_ = Offer(
             Status.CREATED,
@@ -132,7 +134,6 @@ contract Swapify {
         offers[_swapId].push(offer_);
         userOffers[msg.sender].push(offer_);
         userOffersCount[msg.sender]++;
-        offerExists[_swapId] = true;
 
         emit OfferProposed(msg.sender, _offerTokens, _offerTokenIds);
     }
@@ -157,7 +158,7 @@ contract Swapify {
     {
         require(
             offers[_swapId][_offerId].status == Status.CREATED,
-            "Cant Accept now"
+            "Can't Accept now"
         );
         // addresses
         address seller = swaps[_swapId].seller;
@@ -203,18 +204,4 @@ contract Swapify {
     }
 
     function rejectOffer() public {}
-
-
-
-    function getSwapToken(uint256 _swapId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
-        token = swaps[_swapId].swapTokens[_tokenNumber];
-        tokenId = swaps[_swapId].swapTokenIds[_tokenNumber];
-        tokenNumbers = swaps[_swapId].swapTokens.length;
-    }
-
-    function getOfferToken(uint256 _swapId, uint256 _offerId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
-        token = offers[_swapId][_offerId].offerTokens[_tokenNumber];
-        tokenId = offers[_swapId][_offerId].offerTokenIds[_tokenNumber];
-        tokenNumbers = offers[_swapId][_offerId].offerTokenIds.length;
-    }
 }
