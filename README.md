@@ -1,3 +1,5 @@
+## For ETHAMSTERDAM judges - We are actively making changes due to taking this there might be some commits post-ethAmsterdam. You can review the code at the stage it was on 26th april in the commit history.
+
 
 ## Project Description
 Swapify is a peer-to-peer trustless NFT swap dapp. It allows user to put NFTs they want to swap for offer, other users can then make offers (ERC721 and/or ERC20).The party that created the swap will then be able to accept the swap, and if they don’t accept the other party will be able to counter-propose by adding more/different NFTs or topping the offer with ERC20. When both parties are happy, the swap-creator will be able to accept, and the NFTs will be safely swapped.
