@@ -112,6 +112,15 @@ const Discover = () => {
     };
 
     const { isShowing, toggle } = useModal();
+
+    if (txLoad) {
+        return (
+            <div className="w-4/5 mx-auto">
+                <GreenLeft />
+            </div>
+        );
+    }
+
     return (
         <>
             <Header active={HeaderActive.Discover} />

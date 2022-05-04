@@ -8,6 +8,8 @@ import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import GreenLeft from "../public/greenLeft.svg";
+
 // Create connector
 
 const providerOptions = {
@@ -211,6 +213,14 @@ export default function Home() {
 
     const { isShowing, toggle } = useModal();
 
+    if (txLoad) {
+        return (
+            <div className="w-4/5 mx-auto">
+                <h1>Loading...</h1>
+            </div>
+        );
+    }
+
     return (
         <>
             <div className="min-h-screen">
@@ -219,8 +229,7 @@ export default function Home() {
                     <div className="mx-4 my-8 w-4/5 mx-auto" data-aos="fade-up">
                         <OpenSwap toggle={toggle} />
                         <div className="flex flex-col gap-y-6 pb-6 pt-4">
-                            <h1 className="text-3xl">Your open swap</h1>
-                            <h5>Your NFTs up for swap</h5>
+                            <h1 className="text-3xl">Active Swaps✨</h1>
                         </div>
                         <div className="flex flex-col gap-y-6">
                             {userSwaps.map((swap) => (
@@ -228,7 +237,7 @@ export default function Home() {
                                     key={swap.swapId}
                                     className="flex flex-row items-center gap-x-10"
                                 >
-                                    {swap.status == 1 && !swap?.offerToken && (
+                                    {swap && (
                                         <>
                                             <NFTCard
                                                 tokenId={swap.tokenId}
@@ -236,13 +245,40 @@ export default function Home() {
                                                 description={swap.description}
                                                 address={swap.seller}
                                             />
+
+                                            {swap?.offerToken && (
+                                                <>
+                                                    <Tick
+                                                        acceptSwap={() =>
+                                                            acceptSwap(
+                                                                swap.swapId,
+                                                                0
+                                                            )
+                                                        }
+                                                    />
+                                                    <NFTCard
+                                                        tokenId={
+                                                            swap.offerToken
+                                                        }
+                                                        contract={
+                                                            swap.offerAddress
+                                                        }
+                                                        description={
+                                                            swap.description
+                                                        }
+                                                        address={swap.buyer}
+                                                    />
+                                                </>
+                                            )}
                                         </>
                                     )}
                                 </div>
                             ))}
                         </div>
-                        <h5 className="py-6">Your trade requests</h5>
                         <div className="flex flex-col gap-y-6">
+                            {userSwaps.length == 0 && (
+                                <h5>No active swaps yet</h5>
+                            )}
                             {userSwaps.map((swap) => (
                                 <div
                                     key={swap.swapId}

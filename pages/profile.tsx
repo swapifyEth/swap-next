@@ -6,6 +6,7 @@ import Web3Modal from "web3modal";
 import { ethers } from "ethers";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import GreenLeft from "../public/greenLeft.svg";
 
 import ProfileNFTCard from "../components/ProfileNFTCard";
 
@@ -62,6 +63,14 @@ const Profile = () => {
             }
         })();
     }, [address]);
+
+    if (txLoad) {
+        return (
+            <div className="w-4/5 mx-auto">
+                <GreenLeft />
+            </div>
+        );
+    }
 
     return (
         <>
