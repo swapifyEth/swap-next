@@ -3,18 +3,46 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+
+/** @title Swapify
+ *  @dev This contract implement multiple ERC721 tokens swap mechanism.
+ * PROCESS:
+ *          - User can put some of their tokens on offers by approving the contract to spend them.
+ *          - Users can make offers for exisiting swaps by approving the contract to spend their tokens.
+ *          - Once offer is accepted the swap happen. 
+ */
 
 contract Swapify {
+
+    /**
+     * @dev Struct holding swap data.
+     * @param status: indicating swap status e.g OPEN, CANCELLED ..
+     * @param description: string describing the swap e.g `Looking for Azuki`.
+     * @param seller: address of person creating swap.
+     * @param buyer: address of buyer when swap is settled, address(0) otherwise
+     * @param swapTokens: array of tokens to swap.
+     * @param swapId: Id of the swap
+     */
     struct Swap {
-        Status status; //[0]
-        string description; // [1]
-        address seller; //
-        address buyer; // 0
-        address[] swapTokens; //
-        uint256[] swapTokenIds; //
-        uint256 swapId; //
+        Status status; 
+        string description; 
+        address seller; 
+        address buyer; 
+        address[] swapTokens; 
+        uint256[] swapTokenIds; 
+        uint256 swapId; 
     }
 
+
+    /**
+     * @dev Struct holding offer data.
+     * @param status: indicating offer status e.g ACCEPTED, REJECTED ..
+     * @param buyer: address of person creating offer.
+     * @param offerTokens: array of tokens to swap.
+     * @param swapId: Id of the swap attached to the offer
+     */
     struct Offer {
         Status status;
         address buyer;
@@ -24,10 +52,11 @@ contract Swapify {
     }
 
     uint256 public swapCount;
+
+    
     mapping(uint256 => Swap) public swaps;
     mapping(uint256 => Offer[]) public offers;
-    mapping(uint256 => bool) public offerExists;
-    mapping(address => Swap[]) public userSwaps; // contract.userSwaps(address)
+    mapping(address => Swap[]) public userSwaps; 
     mapping(address => Offer[]) public userOffers;
     mapping(address => uint256) public userSwapCount;
     mapping(address => uint256) public userOffersCount;
@@ -53,11 +82,18 @@ contract Swapify {
         CANCELLED
     }
 
+
+    /**
+     * @dev Throws if caller is not the seller of the swapId
+     */
     modifier onlySeller(uint256 _swapId) {
         require(swaps[_swapId].seller == msg.sender, "Only Seller Allowed");
         _;
     }
 
+    /**
+     * @dev Throws if caller is not the buyer of the swapId
+     */
     modifier onlyBuyer(uint256 _swapId, uint256 _offerId) {
         require(
             offers[_swapId][_offerId].buyer == msg.sender,
@@ -75,14 +111,10 @@ contract Swapify {
         _;
     }
 
-    /**
-     * @dev Initialize the contract settings, and owner to the deployer.
-     */
-    constructor() {}
 
     /**
-     * @dev Creates a new order with status : `CREATED` and sets the escrow contract settings : token address and token id.
-     * Can only be called is contract state is BLANK
+     * @dev Creates a new swap with status : `CREATED`.
+     * @notice user need to approve the contract to spend his tokens before calling
      */
     function createSwap(
         address[] memory _swapTokens,
@@ -91,6 +123,7 @@ contract Swapify {
     ) public {
         // checks lenghts
         require(_swapTokens.length == _swapTokenIds.length, "!length");
+        // ADD CHECK that contract is approved to spend tokens
 
         // create swap
         uint256 swapId = swapCount;
@@ -104,14 +137,19 @@ contract Swapify {
             swapId
         );
         // populate mappings/arrays
+        userSwapCount[msg.sender]++;
         swaps[swapId] = swap_;
         userSwaps[msg.sender].push(swap_);
         swapCount++;
-        userSwapCount[msg.sender]++;
 
         emit SwapCreated(msg.sender, _swapTokens, _swapTokenIds);
     }
 
+
+    /**
+     * @dev Creates a new offer with status : `CREATED`.
+     * @notice user need to approve the contract to spend his tokens before calling
+     */
     function proposeOffer(
         uint256 _swapId,
         address[] memory _offerTokens,
@@ -119,7 +157,7 @@ contract Swapify {
     ) public {
         // check lengths
         require(_offerTokens.length == _offerTokenIds.length, "!length");
-        require(_swapId < swapCount, "Invalid _swapId");
+        // ADD CHECK that contract is approved to spend tokens
         //create offer
         Offer memory offer_ = Offer(
             Status.CREATED,
@@ -132,11 +170,14 @@ contract Swapify {
         offers[_swapId].push(offer_);
         userOffers[msg.sender].push(offer_);
         userOffersCount[msg.sender]++;
-        offerExists[_swapId] = true;
 
         emit OfferProposed(msg.sender, _offerTokens, _offerTokenIds);
     }
 
+    /**
+     * @dev Cancells an offer with status 
+     * Only Buyer can call it
+     */
     function cancelOffer(uint256 _swapId, uint256 _offerId)
         public
         onlyBuyer(_swapId, _offerId)
@@ -146,18 +187,21 @@ contract Swapify {
             "Can't Cancell now"
         );
         offers[_swapId][_offerId].status = Status.CANCELLED;
-        emit OfferCancelled(msg.sender, _swapId, _offerId);
+        emit OfferCancelled(msg.sender, _swapId, _offerId );
     }
 
-    function updateOffer() public {}
-
+    
+    /**
+     * @dev Accept swap and make transfers
+     * Only seller can call it
+     */
     function acceptOffer(uint256 _swapId, uint256 _offerId)
         public
         onlySeller(_swapId)
     {
         require(
             offers[_swapId][_offerId].status == Status.CREATED,
-            "Cant Accept now"
+            "Can't Accept now"
         );
         // addresses
         address seller = swaps[_swapId].seller;
@@ -202,19 +246,5 @@ contract Swapify {
         );
     }
 
-    function rejectOffer() public {}
-
-
-
-    function getSwapToken(uint256 _swapId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
-        token = swaps[_swapId].swapTokens[_tokenNumber];
-        tokenId = swaps[_swapId].swapTokenIds[_tokenNumber];
-        tokenNumbers = swaps[_swapId].swapTokens.length;
-    }
-
-    function getOfferToken(uint256 _swapId, uint256 _offerId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
-        token = offers[_swapId][_offerId].offerTokens[_tokenNumber];
-        tokenId = offers[_swapId][_offerId].offerTokenIds[_tokenNumber];
-        tokenNumbers = offers[_swapId][_offerId].offerTokenIds.length;
-    }
+   
 }

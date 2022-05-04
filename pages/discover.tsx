@@ -129,12 +129,14 @@ const Discover = () => {
                 <div className="flex flex-col gap-y-6" data-aos="fade-in">
                     {openSwaps.map((swap) => {
                         return (
+                            <>
+                            {
+                                address != swap.seller &&
                             <div
                                 key={swap.swapId}
                                 className="flex  flex-col gap-x-10"
                             >
                                 <div className="flex flex-row gap-x-10  items-center">
-                                    <>
                                         <NFTCard
                                             address={swap.seller}
                                             description={swap.description}
@@ -153,9 +155,10 @@ const Discover = () => {
                                         >
                                             Propose offer
                                         </button>
-                                    </>
                                 </div>
                             </div>
+                            }
+                            </>
                         );
                     })}
                 </div>

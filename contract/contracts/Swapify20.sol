@@ -5,7 +5,25 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+/** @title Swapify20
+ *  @dev This contract implement multiple ERC721 and ERC20 tokens swap mechanism.
+ * PROCESS:
+ *          - User can put some of their ERC721 tokens on offers by approving the contract to spend them.
+ *          - Users can make offers for exisiting swaps by approving the contract to spend their ERC20/ERC721 tokens.
+ *          - Once offer is accepted the swap happen. 
+ */
+
 contract Swapify20 {
+
+    /**
+     * @dev Struct holding swap data.
+     * @param status: indicating swap status e.g OPEN, CANCELLED ..
+     * @param description: string describing the swap e.g `Looking for Azuki`.
+     * @param seller: address of person creating swap.
+     * @param buyer: address of buyer when swap is settled, address(0) otherwise
+     * @param swapTokens: array of tokens to swap.
+     * @param swapId: Id of the swap
+     */
     struct Swap {
         Status status;
         string description;
@@ -16,6 +34,13 @@ contract Swapify20 {
         uint256 swapId; //
     }
 
+    /**
+     * @dev Struct holding offer data.
+     * @param status: indicating offer status e.g ACCEPTED, REJECTED ..
+     * @param buyer: address of person creating offer.
+     * @param offerTokens: array of tokens to swap.
+     * @param swapId: Id of the swap attached to the offer
+     */
     struct Offer {
         Status status;
         address buyer;
@@ -63,11 +88,17 @@ contract Swapify20 {
         CANCELLED
     }
 
+    /**
+     * @dev Throws if caller is not the seller of the swapId
+     */
     modifier onlySeller(uint256 _swapId) {
         require(swaps[_swapId].seller == msg.sender, "Only Seller Allowed");
         _;
     }
 
+     /**
+     * @dev Throws if caller is not the buyer of the swapId
+     */
     modifier onlyBuyer(uint256 _swapId, uint256 _offerId) {
         require(
             offers[_swapId][_offerId].buyer == msg.sender,
@@ -85,14 +116,10 @@ contract Swapify20 {
         _;
     }
 
-    /**
-     * @dev Initialize the contract settings, and owner to the deployer.
-     */
-    constructor() {}
 
     /**
-     * @dev Creates a new order with status : `CREATED` and sets the escrow contract settings : token address and token id.
-     * Can only be called is contract state is BLANK
+     * @dev Creates a new swap with status : `CREATED`.
+     * @notice user need to approve the contract to spend his tokens before calling
      */
     function createSwap(
         address[] memory _swapTokens,
@@ -123,6 +150,11 @@ contract Swapify20 {
         emit SwapCreated(msg.sender, _swapTokens, _swapTokenIds);
     }
 
+
+     /**
+     * @dev Creates a new offer with status : `CREATED`.
+     * @notice user need to approve the contract to spend his tokens before calling
+     */
     function proposeOffer(
         uint256 _swapId,
         address[] memory _offerTokens,
@@ -158,6 +190,11 @@ contract Swapify20 {
         );
     }
 
+
+    /**
+     * @dev Cancells an offer with status 
+     * Only Buyer can call it
+     */
     function cancelOffer(uint256 _swapId, uint256 _offerId)
         public
         onlyBuyer(_swapId, _offerId)
@@ -170,8 +207,13 @@ contract Swapify20 {
         emit OfferCancelled(msg.sender, _swapId, _offerId);
     }
 
-    function updateOffer() public {}
 
+
+
+    /**
+     * @dev Accept swap and make transfers
+     * Only seller can call it
+     */
     function acceptOffer(uint256 _swapId, uint256 _offerId)
         public
         onlySeller(_swapId)
@@ -235,5 +277,4 @@ contract Swapify20 {
         );
     }
 
-    function rejectOffer() public {}
 }
