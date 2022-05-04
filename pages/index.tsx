@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Header, { HeaderActive } from "../components/Header";
 import OpenSwap from "../components/OpenSwap";
+import Spinner from "../components/Spinner";
 
 import { ethers } from "ethers";
 
@@ -52,7 +53,7 @@ const providerOptions = {
 
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 const swapContract = require("../contract/artifacts/contracts/Swapify.sol/Swapify.json");
-const swapAddress = "0xeF969456383e03ad7891B11cc0c0dA4d7741071c";
+const swapAddress = "0xc746023B897AF5a2C34E22c757cB8B7e7E88b1d1";
 
 import { WebSocketProvider } from "@ethersproject/providers";
 import { useEffect, useState } from "react";
@@ -71,6 +72,7 @@ export default function Home() {
     const [userSwaps, setUserSwaps] = useState([]);
 
     const [txLoad, setTxLoad] = useState(false);
+    const [approveLoad, setApproveLoad] = useState(false);
 
     useEffect(() => {
         if (address) {
@@ -108,10 +110,10 @@ export default function Home() {
 
         //Call approve
         const tx = await tokenContract.approve(swapAddress, tokenId);
-        setTxLoad(true);
+        setApproveLoad(true);
         const result = await tx.wait();
 
-        setTxLoad(false);
+        setApproveLoad(false);
 
         setApproved({ contractAddress, tokenId: tokenId });
     };
@@ -215,8 +217,8 @@ export default function Home() {
 
     if (txLoad) {
         return (
-            <div className="w-4/5 mx-auto">
-                <h1>Loading...</h1>
+            <div class="grid place-items-center h-screen">
+                <Spinner />
             </div>
         );
     }
@@ -342,7 +344,7 @@ export default function Home() {
                 approveNft={approveNft}
                 approvedNft={approved}
                 approved={approved}
-                txLoad={txLoad}
+                txLoad={approveLoad}
                 isShowing={isShowing}
                 createSwap={createSwap}
                 address={address}

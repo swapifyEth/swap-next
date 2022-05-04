@@ -60,6 +60,7 @@ contract Swapify {
     mapping(address => Offer[]) public userOffers;
     mapping(address => uint256) public userSwapCount;
     mapping(address => uint256) public userOffersCount;
+    mapping(uint256 => bool) public offerExists;
 
     event SwapCreated(address seller, address[] tokens, uint256[] tokenIds);
     event OfferProposed(address buyer, address[] tokens, uint256[] tokenIds);
@@ -171,6 +172,9 @@ contract Swapify {
         userOffers[msg.sender].push(offer_);
         userOffersCount[msg.sender]++;
 
+        //Needed for frontend verification before we add something like the graph for easier querying
+        offerExists[_swapId] = true;
+
         emit OfferProposed(msg.sender, _offerTokens, _offerTokenIds);
     }
 
@@ -246,5 +250,15 @@ contract Swapify {
         );
     }
 
-   
+    function getSwapToken(uint256 _swapId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
+        token = swaps[_swapId].swapTokens[_tokenNumber];
+        tokenId = swaps[_swapId].swapTokenIds[_tokenNumber];
+        tokenNumbers = swaps[_swapId].swapTokens.length;
+    }
+
+    function getOfferToken(uint256 _swapId, uint256 _offerId, uint256 _tokenNumber) public view returns(address token, uint256 tokenId, uint256 tokenNumbers) {
+        token = offers[_swapId][_offerId].offerTokens[_tokenNumber];
+        tokenId = offers[_swapId][_offerId].offerTokenIds[_tokenNumber];
+        tokenNumbers = offers[_swapId][_offerId].offerTokenIds.length;
+    }
 }

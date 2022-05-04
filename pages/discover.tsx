@@ -9,7 +9,7 @@ import abi from "../contract/artifacts/contracts/Swapify.sol/Swapify.json";
 import GreenLeft from "../public/greenLeft.svg";
 import Web3Modal from "web3modal";
 
-const swapAddress = "0xeF969456383e03ad7891B11cc0c0dA4d7741071c";
+const swapAddress = "0xc746023B897AF5a2C34E22c757cB8B7e7E88b1d1";
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
 import WalletConnectProvider from "@walletconnect/web3-provider";
 // Create connector
@@ -130,34 +130,33 @@ const Discover = () => {
                     {openSwaps.map((swap) => {
                         return (
                             <>
-                            {
-                                address != swap.seller &&
-                            <div
-                                key={swap.swapId}
-                                className="flex  flex-col gap-x-10"
-                            >
-                                <div className="flex flex-row gap-x-10  items-center">
-                                        <NFTCard
-                                            address={swap.seller}
-                                            description={swap.description}
-                                            tokenId={swap.tokenId}
-                                            contract={swap.contract}
-                                        />
-                                        <div className="flex flex-col gap-y-4">
-                                            <GreenLeft />
+                                {address != swap.seller && (
+                                    <div
+                                        key={swap.swapId}
+                                        className="flex  flex-col gap-x-10"
+                                    >
+                                        <div className="flex flex-row gap-x-10  items-center">
+                                            <NFTCard
+                                                address={swap.seller}
+                                                description={swap.description}
+                                                tokenId={swap.tokenId}
+                                                contract={swap.contract}
+                                            />
+                                            <div className="flex flex-col gap-y-4">
+                                                <GreenLeft />
+                                            </div>
+                                            <button
+                                                onClick={() => {
+                                                    toggle();
+                                                    setSwapId(swap.swapId);
+                                                }}
+                                                className="bg-swapify-purple px-10 text-sm font-bold py-2 rounded-full hover:bg-purple-600"
+                                            >
+                                                Propose offer
+                                            </button>
                                         </div>
-                                        <button
-                                            onClick={() => {
-                                                toggle();
-                                                setSwapId(swap.swapId);
-                                            }}
-                                            className="bg-swapify-purple px-10 text-sm font-bold py-2 rounded-full hover:bg-purple-600"
-                                        >
-                                            Propose offer
-                                        </button>
-                                </div>
-                            </div>
-                            }
+                                    </div>
+                                )}
                             </>
                         );
                     })}

@@ -5,6 +5,7 @@ import VNFTCard from "./VNFTCard";
 import { Formik, Form, Field } from "formik";
 import axios from "axios";
 import clsx from "clsx";
+import Spinner from "./Spinner";
 
 const Modal = ({
     isShowing,
@@ -16,7 +17,7 @@ const Modal = ({
     address,
     txLoad,
     swapId,
-    initialized
+    initialized,
 }) => {
     const [selected, setSelected] = React.useState([false, false, false]);
     const [loading, setLoading] = React.useState(false);
@@ -90,32 +91,41 @@ const Modal = ({
                               >
                                   {({ isSubmitting }) => (
                                       <Form className="flex flex-col gap-y-6">
-                                          <div className="flex flex-row gap-x-3 mx-auto items-center">
-                                              {nfts.map((nft, index) => (
-                                                  <VNFTCard
-                                                      key={index}
-                                                      active={
-                                                          approvedNft?.tokenId ==
-                                                          nft?.id?.tokenId
-                                                              ? true
-                                                              : false
-                                                      }
-                                                      name={nft?.metadata?.name}
-                                                      onApprove={async () => {
-                                                          setLoading(true);
-                                                          approveNft(
-                                                              nft?.contract
-                                                                  ?.address,
+                                          {!txLoad ? (
+                                              <div className="flex flex-row gap-x-3 mx-auto items-center">
+                                                  {nfts.map((nft, index) => (
+                                                      <VNFTCard
+                                                          key={index}
+                                                          active={
+                                                              approvedNft?.tokenId ==
                                                               nft?.id?.tokenId
-                                                          );
-                                                          setLoading(false);
-                                                      }}
-                                                      image={
-                                                          nft?.metadata?.image
-                                                      }
-                                                  />
-                                              ))}
-                                          </div>
+                                                                  ? true
+                                                                  : false
+                                                          }
+                                                          name={
+                                                              nft?.metadata
+                                                                  ?.name
+                                                          }
+                                                          onApprove={async () => {
+                                                              setLoading(true);
+                                                              approveNft(
+                                                                  nft?.contract
+                                                                      ?.address,
+                                                                  nft?.id
+                                                                      ?.tokenId
+                                                              );
+                                                              setLoading(false);
+                                                          }}
+                                                          image={
+                                                              nft?.metadata
+                                                                  ?.image
+                                                          }
+                                                      />
+                                                  ))}
+                                              </div>
+                                          ) : (
+                                              <Spinner />
+                                          )}
                                           {initialized && (
                                               <>
                                                   <label>Description</label>
