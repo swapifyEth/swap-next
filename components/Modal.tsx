@@ -12,14 +12,13 @@ const Modal = ({
     hide,
     createSwap,
     approveNft,
-    approvedNft,
+    approvedTokens,
     approved,
     address,
     txLoad,
     swapId,
     initialized,
 }) => {
-    const [selected, setSelected] = React.useState([false, false, false]);
     const [loading, setLoading] = React.useState(false);
     //Load wallet nfts
     const [nfts, setNfts] = useState([]);
@@ -74,7 +73,6 @@ const Modal = ({
                               </div>
                               <Formik
                                   initialValues={{
-                                      nfts: selected,
                                       description: "",
                                   }}
                                   onSubmit={(values, { setSubmitting }) => {
@@ -96,12 +94,12 @@ const Modal = ({
                                                   {nfts.map((nft, index) => (
                                                       <VNFTCard
                                                           key={index}
-                                                          active={
-                                                              approvedNft?.tokenId ==
-                                                              nft?.id?.tokenId
-                                                                  ? true
-                                                                  : false
-                                                          }
+                                                          active={approvedTokens.find(
+                                                              (id) =>
+                                                                  id ===
+                                                                  nft?.id
+                                                                      ?.tokenId
+                                                          )}
                                                           name={
                                                               nft?.metadata
                                                                   ?.name

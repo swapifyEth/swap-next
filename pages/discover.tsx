@@ -8,6 +8,7 @@ import useModal from "../hooks/showModal";
 import abi from "../contract/artifacts/contracts/Swapify.sol/Swapify.json";
 import GreenLeft from "../public/greenLeft.svg";
 import Web3Modal from "web3modal";
+import Spinner from "../components/Spinner";
 
 const swapAddress = "0xc746023B897AF5a2C34E22c757cB8B7e7E88b1d1";
 const erc721 = require("../contract/artifacts/@openzeppelin/contracts/token/ERC721/ERC721.sol/ERC721.json");
@@ -26,11 +27,13 @@ const providerOptions = {
 const Discover = () => {
     const [openSwaps, setOpenSwaps] = useState([]);
     const [address, setAddress] = useState(null);
-    const [approved, setApproved] = useState(null);
+    const [approvedTokens, setApprovedTokens] = useState([]);
+    const [approvedContracts, setApprovedContracts] = useState([]);
     const [signer, setSigner] = useState(null);
     const [swapId, setSwapId] = useState(null);
 
     const [txLoad, setTxLoad] = useState(false);
+    const [approveLoad, setApproveLoad] = useState(false);
 
     useEffect(() => {
         getData();
@@ -84,12 +87,19 @@ const Discover = () => {
 
         //Call approve
         const tx = await tokenContract.approve(swapAddress, tokenId);
-        setTxLoad(true);
+        setApproveLoad(true);
         const result = await tx.wait();
 
-        setTxLoad(false);
+        setApproveLoad(false);
 
-        setApproved({ contractAddress, tokenId: tokenId });
+        let newTokens = [...approvedTokens];
+        let newContracts = [...approvedContracts];
+
+        newTokens.push(tokenId);
+        newContracts.push(contractAddress);
+
+        setApprovedTokens(newTokens);
+        setApprovedContracts(newContracts);
     };
 
     const createOffer = async (_swapId) => {
@@ -102,12 +112,15 @@ const Discover = () => {
 
         const tx = await contract.proposeOffer(
             _swapId,
-            [approved.contractAddress],
-            [approved.tokenId]
+            approvedContracts,
+            approvedTokens
         );
         setTxLoad(true);
         const result = await tx.wait();
         setTxLoad(false);
+        setApprovedContracts([]);
+        setApprovedTokens([]);
+
         toggle();
     };
 
@@ -115,8 +128,8 @@ const Discover = () => {
 
     if (txLoad) {
         return (
-            <div className="w-4/5 mx-auto">
-                <GreenLeft />
+            <div class="grid place-items-center h-screen">
+                <Spinner />
             </div>
         );
     }
@@ -164,9 +177,9 @@ const Discover = () => {
             </div>
             <Modal
                 approveNft={approveNft}
-                approvedNft={approved}
-                approved={approved}
-                txLoad={txLoad}
+                approvedTokens={approvedTokens}
+                approved={approvedTokens?.length > 0 ? true : false}
+                txLoad={approveLoad}
                 isShowing={isShowing}
                 createSwap={createOffer}
                 address={address}

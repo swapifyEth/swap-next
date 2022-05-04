@@ -66,7 +66,9 @@ import useModal from "../hooks/showModal";
 
 export default function Home() {
     const [address, setAddress] = useState(null);
-    const [approved, setApproved] = useState(null);
+    const [approvedTokens, setApprovedTokens] = useState([]);
+    const [approvedContracts, setApprovedContracts] = useState([]);
+
     const [provider, setProvider] = useState(null);
     const [signer, setSigner] = useState(null);
     const [userSwaps, setUserSwaps] = useState([]);
@@ -114,8 +116,14 @@ export default function Home() {
         const result = await tx.wait();
 
         setApproveLoad(false);
+        let newTokens = [...approvedTokens];
+        let newContracts = [...approvedContracts];
 
-        setApproved({ contractAddress, tokenId: tokenId });
+        newTokens.push(tokenId);
+        newContracts.push(contractAddress);
+
+        setApprovedTokens(newTokens);
+        setApprovedContracts(newContracts);
     };
 
     const createSwap = async (description) => {
@@ -127,14 +135,18 @@ export default function Home() {
 
         // const data = await contract.userSwaps(address, 0);
         // console.log(data);
+
         const tx = await contract.createSwap(
-            [approved.contractAddress],
-            [approved.tokenId],
+            approvedContracts,
+            approvedTokens,
             description
         );
         setTxLoad(true);
         const result = await tx.wait();
         setTxLoad(false);
+        setApprovedContracts([]);
+        setApprovedTokens([]);
+
         toggle();
     };
 
@@ -173,10 +185,31 @@ export default function Home() {
             console.log(swap);
 
             const swapDetails = await contract.getSwapToken(swap.swapId, 0);
-            console.log(swapDetails);
+            //Check if there is more than one nft on swap side
+
+            let tokenIds = [swapDetails.tokenId];
+            let tokenContracts = [swapDetails.token];
+
+            if (Number(swapDetails?.tokenNumbers) > 1) {
+                for (
+                    let index = 1;
+                    index < Number(swapDetails.tokenNumbers);
+                    index++
+                ) {
+                    const swapDetails = await contract.getSwapToken(
+                        swap.swapId,
+                        index
+                    );
+                    tokenIds.push(swapDetails.tokenId);
+                    tokenContracts.push(swapDetails.token);
+                }
+            }
             //Check it exists
             let offer;
             let offerDetails;
+
+            let offerTokens = [];
+            let offerContracts = [];
 
             console.log("OFFFER EXISTS");
 
@@ -184,24 +217,39 @@ export default function Home() {
             console.log(exists);
             if (exists) {
                 offer = await contract.offers(swap.swapId, 0);
-                console.log("THIS IS OFFER");
-                console.log(offer);
                 offerDetails = await contract.getOfferToken(swap.swapId, 0, 0);
-                console.log("OFFFER EXISTS");
-                console.log(offerDetails);
+                offerTokens = [offerDetails.tokenId];
+                offerContracts = [offerDetails.token];
+
+                if (Number(offerDetails?.tokenNumbers) > 1) {
+                    for (
+                        let index = 1;
+                        index < Number(offerDetails.tokenNumbers);
+                        index++
+                    ) {
+                        const offerDetails = await contract.getOfferToken(
+                            swap.swapId,
+                            0,
+                            index
+                        );
+                        offerTokens.push(offerDetails.tokenId);
+                        offerContracts.push(offerDetails.token);
+                    }
+                }
             }
             console.log("SWAP STATUS");
+            console.log(offerTokens);
 
             swaps.push({
                 swapId: swap.swapId,
-                tokenId: swapDetails.tokenId,
-                contract: swapDetails.token,
+                tokenIds: tokenIds,
+                contracts: tokenContracts,
                 seller: swap.seller,
                 description: swap.description,
                 buyer: offer?.buyer,
                 offerId: 0,
-                offerToken: offerDetails?.tokenId,
-                offerAddress: offerDetails?.token,
+                offerTokens: offerTokens,
+                offerContracts: offerContracts,
                 status: offerDetails?.token
                     ? offerDetails?.status
                     : swap.status,
@@ -233,22 +281,45 @@ export default function Home() {
                         <div className="flex flex-col gap-y-6 pb-6 pt-4">
                             <h1 className="text-3xl">Active Swaps✨</h1>
                         </div>
-                        <div className="flex flex-col gap-y-6">
+                        <div className="flex flex-col gap-y-10">
                             {userSwaps.map((swap) => (
                                 <div
                                     key={swap.swapId}
-                                    className="flex flex-row items-center gap-x-10"
+                                    className="flex flex-col items-start gap-x-10"
                                 >
                                     {swap && (
                                         <>
-                                            <NFTCard
-                                                tokenId={swap.tokenId}
-                                                contract={swap.contract}
-                                                description={swap.description}
-                                                address={swap.seller}
-                                            />
+                                            <h2>
+                                                Swap {Number(swap.swapId)}🌈
+                                            </h2>
+                                            {swap.tokenIds.map(
+                                                (tokenId, index) => (
+                                                    <div
+                                                        key={index}
+                                                        style={{
+                                                            marginBottom: 15,
+                                                        }}
+                                                    >
+                                                        <NFTCard
+                                                            key={index}
+                                                            tokenId={tokenId}
+                                                            contract={
+                                                                swap.contracts[
+                                                                    index
+                                                                ]
+                                                            }
+                                                            description={
+                                                                swap.description
+                                                            }
+                                                            address={
+                                                                swap.seller
+                                                            }
+                                                        />
+                                                    </div>
+                                                )
+                                            )}
 
-                                            {swap?.offerToken && (
+                                            {swap.offerTokens?.length > 0 && (
                                                 <>
                                                     <Tick
                                                         acceptSwap={() =>
@@ -258,18 +329,34 @@ export default function Home() {
                                                             )
                                                         }
                                                     />
-                                                    <NFTCard
-                                                        tokenId={
-                                                            swap.offerToken
-                                                        }
-                                                        contract={
-                                                            swap.offerAddress
-                                                        }
-                                                        description={
-                                                            swap.description
-                                                        }
-                                                        address={swap.buyer}
-                                                    />
+                                                    {swap.offerTokens.map(
+                                                        (offerToken, index) => (
+                                                            <div
+                                                                key={index}
+                                                                style={{
+                                                                    marginBottom: 15,
+                                                                }}
+                                                            >
+                                                                <NFTCard
+                                                                    tokenId={
+                                                                        offerToken
+                                                                    }
+                                                                    contract={
+                                                                        swap
+                                                                            .offerContracts[
+                                                                            index
+                                                                        ]
+                                                                    }
+                                                                    description={
+                                                                        swap.description
+                                                                    }
+                                                                    address={
+                                                                        swap.buyer
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        )
+                                                    )}
                                                 </>
                                             )}
                                         </>
@@ -342,8 +429,8 @@ export default function Home() {
             <Modal
                 swapId
                 approveNft={approveNft}
-                approvedNft={approved}
-                approved={approved}
+                approvedTokens={approvedTokens}
+                approved={approvedTokens?.length > 0 ? true : false}
                 txLoad={approveLoad}
                 isShowing={isShowing}
                 createSwap={createSwap}
